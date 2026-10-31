@@ -19,6 +19,7 @@ alone — no guessing needed.
 | KenKen | 4×4, 5×5, 6×6 |
 | Futoshiki | 5×5, 6×6 |
 | Kakuro | 6×6, 8×8 (including clue cells) |
+| Hitori | 6×6, 7×7, 8×8 |
 
 ## Shared features
 
@@ -66,6 +67,9 @@ solver and an independent rule checker.
 - **Kakuro**: a symmetric layout of runs is filled with random digits; runs the solver can't
   crack are refilled with low/high digits (fewer combinations) until per-run combination
   logic solves the whole grid.
+- **Hitori**: a random connected, non-touching shading is laid over a random Latin square and
+  each shaded cell copies a number from its row or column; layouts are re-rolled until a solver
+  using sandwich/pair patterns, shade/unshade propagation and connectivity (cut cells) solves it.
 
 ## Project layout
 

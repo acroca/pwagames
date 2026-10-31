@@ -1,5 +1,6 @@
 import { generate as binairo } from './binairo/logic';
 import { generate as futoshiki } from './futoshiki/logic';
+import { generate as hitori } from './hitori/logic';
 import { generate as kakuro } from './kakuro/logic';
 import { generate as kenken } from './kenken/logic';
 import { generate as killer } from './killer/logic';
@@ -17,4 +18,5 @@ export const GENERATORS: Record<string, (variant: string, seed: number, extra?: 
   kenken,
   futoshiki,
   kakuro,
+  hitori,
 };

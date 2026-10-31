@@ -1020,3 +1020,32 @@ button.primary {
   text-decoration: line-through;
   opacity: 0.6;
 }
+
+/* Hitori */
+.board-hitori .num {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80%;
+  height: 80%;
+  border: 2px solid transparent;
+  border-radius: 50%;
+  font-size: calc(var(--cell) * 0.5);
+  font-weight: 600;
+}
+.board-hitori .cell.shaded {
+  background: var(--fill);
+}
+.board-hitori .cell.shaded .num {
+  color: var(--surface);
+  opacity: 0.55;
+}
+.board-hitori .cell.circled .num {
+  border-color: var(--accent);
+}
+.board-hitori .cell.shaded.clash {
+  background: var(--bad);
+}
+.board-hitori .cell.wrong {
+  box-shadow: inset 0 0 0 3px var(--bad);
+}
