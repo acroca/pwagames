@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+    <meta name="description" content="Logic picture puzzles. Every puzzle is solvable without guessing." />
+    <meta name="theme-color" content="#0f172a" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Nonograms" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <title>Nonograms</title>
+  </head>
+  <body>
+    <header class="topbar">
+      <h1>Nonograms <span id="puzzle-id" class="puzzle-id"></span></h1>
+      <nav class="actions">
+        <button id="undo" type="button">Undo</button>
+        <button id="restart" type="button">Restart</button>
+        <button id="new" type="button" class="primary">New</button>
+      </nav>
+    </header>
+    <main>
+      <div id="board" class="board" role="grid" aria-label="Nonogram board"></div>
+      <p id="status" class="status" role="status" aria-live="polite"></p>
+    </main>
+    <footer class="toolbar" role="toolbar" aria-label="Tool">
+      <button type="button" class="tool" data-tool="1" aria-pressed="true">
+        <span class="tool-icon fill-icon" aria-hidden="true"></span>Fill
+      </button>
+      <button type="button" class="tool" data-tool="2" aria-pressed="false">
+        <span class="tool-icon cross-icon" aria-hidden="true"></span>Block
+      </button>
+    </footer>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
