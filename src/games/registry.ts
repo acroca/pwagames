@@ -6,8 +6,9 @@ import { kakuro } from './kakuro';
 import { kenken } from './kenken';
 import { killer } from './killer';
 import { nonogram } from './nonogram';
+import { nurikabe } from './nurikabe';
 import { queens } from './queens';
 import { sudoku } from './sudoku';
 
 /** Games in menu order. */
-export const GAMES: GameModule[] = [nonogram, binairo, queens, sudoku, killer, kenken, futoshiki, kakuro, hitori];
+export const GAMES: GameModule[] = [nonogram, binairo, queens, sudoku, killer, kenken, futoshiki, kakuro, hitori, nurikabe];

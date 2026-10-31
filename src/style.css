@@ -1049,3 +1049,25 @@ button.primary {
 .board-hitori .cell.wrong {
   box-shadow: inset 0 0 0 3px var(--bad);
 }
+
+/* Nurikabe */
+.board-nurikabe .cell.clue {
+  font-size: calc(var(--cell) * 0.55);
+  font-weight: 700;
+}
+.board-nurikabe .cell.sea {
+  background: var(--fill);
+}
+.board-nurikabe .cell.sea.clash {
+  background: var(--bad);
+}
+.board-nurikabe .cell.dot::after {
+  content: '';
+  width: 22%;
+  height: 22%;
+  border-radius: 50%;
+  background: var(--muted);
+}
+.board-nurikabe .cell.wrong {
+  box-shadow: inset 0 0 0 3px var(--bad);
+}

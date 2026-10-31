@@ -20,6 +20,7 @@ alone — no guessing needed.
 | Futoshiki | 5×5, 6×6 |
 | Kakuro | 6×6, 8×8 (including clue cells) |
 | Hitori | 6×6, 7×7, 8×8 |
+| Nurikabe | 7×7 – 10×10 |
 
 ## Shared features
 
@@ -70,6 +71,9 @@ solver and an independent rule checker.
 - **Hitori**: a random connected, non-touching shading is laid over a random Latin square and
   each shaded cell copies a number from its row or column; layouts are re-rolled until a solver
   using sandwich/pair patterns, shade/unshade propagation and connectivity (cut cells) solves it.
+- **Nurikabe**: islands are grown on an all-sea grid (no 2×2 pools, connected sea), then a
+  local search flips cells or moves numbers near whatever the solver can't decide, until a solver
+  using reachability, sea/island bottlenecks, pool rules and per-island completions solves it.
 
 ## Project layout
 

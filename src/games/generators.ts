@@ -5,6 +5,7 @@ import { generate as kakuro } from './kakuro/logic';
 import { generate as kenken } from './kenken/logic';
 import { generate as killer } from './killer/logic';
 import { generatePuzzle as nonogram } from './nonogram/logic';
+import { generate as nurikabe } from './nurikabe/logic';
 import { generate as queens } from './queens/logic';
 import { generate as sudoku } from './sudoku/logic';
 
@@ -19,4 +20,5 @@ export const GENERATORS: Record<string, (variant: string, seed: number, extra?: 
   futoshiki,
   kakuro,
   hitori,
+  nurikabe,
 };
