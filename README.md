@@ -16,6 +16,7 @@ alone — no guessing needed.
 | Queens (Star Battle) | 7×7 – 10×10 |
 | Sudoku | Easy, medium, hard |
 | Killer Sudoku | Easy, medium, hard |
+| KenKen | 4×4, 5×5, 6×6 |
 
 ## Shared features
 
@@ -55,6 +56,9 @@ solver and an independent rule checker.
 - **Killer Sudoku**: cages are grown over a random grid, then split (or, on easy, given a
   digit) wherever the solver gets stuck. Levels add cage combinations, the rule of 45 over
   houses and groups of houses, and innie/outie differences; medium and hard have no givens.
+- **KenKen**: random cages over a random Latin square, with operations re-picked (then cages
+  redrawn) until a solver using cage enumeration, cage-confined digits and naked/hidden
+  subsets solves it; puzzles that fall to cage arithmetic plus singles are rejected.
 
 ## Project layout
 

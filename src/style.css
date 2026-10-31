@@ -903,7 +903,20 @@ button.primary {
   line-height: 1;
   pointer-events: none;
 }
-.board-killer .has-sum .notes {
+.num-board .has-sum .notes {
   top: 24%;
   left: 12%;
+}
+
+/* KenKen */
+.board-kenken {
+  border-width: 3px;
+  border-right-width: 2px;
+  border-bottom-width: 2px;
+}
+.board-kenken > .cell.wall-r {
+  border-right: 3px solid var(--line-strong);
+}
+.board-kenken > .cell.wall-b {
+  border-bottom: 3px solid var(--line-strong);
 }
