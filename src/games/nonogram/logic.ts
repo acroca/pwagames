@@ -1,3 +1,5 @@
+import { mulberry32, randomSeed } from '../../core/rng';
+
 /** Solver knowledge about a cell: unknown, known empty, or known filled. */
 export const UNKNOWN = -1;
 export const EMPTY = 0;
@@ -12,6 +14,7 @@ export interface Puzzle {
   cols: Clue[];
   /** Row-major solution, 1 = filled, 0 = empty. */
   solution: number[];
+  variant: string;
   seed: number;
 }
 
@@ -173,22 +176,6 @@ export function solveLogically(rows: Clue[], cols: Clue[]): SolveResult {
   return { grid, solved: !grid.includes(UNKNOWN), contradiction: false };
 }
 
-/** Small, fast, seedable PRNG (mulberry32). */
-export function mulberry32(seed: number): () => number {
-  let a = seed >>> 0;
-  return () => {
-    a = (a + 0x6d2b79f5) >>> 0;
-    let t = a;
-    t = Math.imul(t ^ (t >>> 15), t | 1);
-    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
-
-export function randomSeed(): number {
-  return Math.floor(Math.random() * 0xffffffff) >>> 0;
-}
-
 /**
  * Generates a puzzle whose unique solution can be reached purely by logic.
  * Random grids are drawn until one is fully solvable by the line solver.
@@ -204,7 +191,7 @@ export function generatePuzzle(size = 10, seed = randomSeed()): Puzzle {
     if (rows.some((c) => c.length === 0) || cols.some((c) => c.length === 0)) continue;
     const result = solveLogically(rows, cols);
     if (result.solved && result.grid.every((v, i) => v === solution[i])) {
-      return { size, rows, cols, solution, seed };
+      return { size, rows, cols, solution, variant: String(size), seed };
     }
   }
 }

@@ -9,7 +9,7 @@ import {
   solveLine,
   solveLogically,
   type Knowledge,
-} from './nonogram';
+} from './logic';
 
 const U = UNKNOWN;
 const E = EMPTY;

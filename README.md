@@ -1,24 +1,54 @@
-# Nonograms
+# Logic Puzzles (pwagames)
 
-A Progressive Web App for playing 10×10 [nonogram](https://en.wikipedia.org/wiki/Nonogram) puzzles,
-designed for iPhone. Open **https://acroca.github.io/nonograms/** in Safari and use
-**Share → Add to Home Screen** to install it; it then runs full-screen and works offline.
+A Progressive Web App with a collection of logic puzzle games, designed for iPhone.
+Open **https://acroca.github.io/pwagames/** in Safari and use **Share → Add to Home Screen**
+to install it; it then runs full-screen and works offline.
 
-## Playing
+Every puzzle is generated on the fly, has exactly one solution, and can be solved by logic
+alone — no guessing needed.
 
-- Pick a tool at the bottom: **Fill** fills squares, **Block** marks squares as blocked (✕).
-- Tap a square to toggle it, or drag a finger to paint along a row or column. Dragging only
-  changes squares in the same state as the first one, so existing marks aren't overwritten.
-- The clues of the row and column under your finger are highlighted while drawing.
-- Clues turn grey once their row/column matches. Progress is saved automatically.
+## Games
+
+| Game | Sizes / levels |
+| --- | --- |
+| Nonogram | 10×10 |
+
+## Shared features
+
+Every game has the same app bar and behaviour:
+
+- **Menu cards** list the games, with the in-progress puzzle or your best time.
+- **Undo** steps back through your moves; **Check** flags entries that contradict the
+  solution.
+- A **timer** runs while the game is on screen and stops when it's solved; best times are kept
+  per game and size.
+- Progress is **saved automatically** (per game), so you can switch games and come back.
+- **New** opens a sheet to pick a size or difficulty, start a new puzzle, restart the current
+  one, change game settings, and read the rules.
 
 ## Puzzle generation
 
-Every puzzle has a unique solution reachable by logic alone — no guessing needed.
-The generator (`src/nonogram.ts`) draws random 10×10 pictures and keeps only those that a
-line solver fully solves. The line solver only makes deductions that hold for every valid
-placement of a row's or column's blocks, so a complete solve proves the solution is unique.
-Tests additionally confirm uniqueness with a brute-force solver.
+Generators live next to each game in `src/games/<game>/logic.ts` and are pure functions of a
+size/difficulty and a seed. They run in a Web Worker (`src/core/worker.ts`) with a loading
+indicator, so the UI never freezes.
+
+Each generator pairs a *logic solver* (constraint propagation using human techniques only)
+with a *counting solver* (propagation + backtracking that stops after finding two solutions).
+A puzzle is only accepted if the logic solver solves it completely, which proves its solution
+is unique and reachable without guessing. Tests check every generated puzzle with the counting
+solver and an independent rule checker.
+
+- **Nonogram**: random pictures are kept only if a line solver fully solves them.
+
+## Project layout
+
+```
+src/main.ts              menu + routing
+src/core/                shell (app bar, timer, undo, check, autosave), worker, input helpers
+src/games/registry.ts    games in menu order
+src/games/generators.ts  generator table used by the worker
+src/games/<game>/        logic.ts (generator + solvers), index.ts (UI), tests
+```
 
 ## Development
 

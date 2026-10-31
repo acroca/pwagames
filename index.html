@@ -3,37 +3,50 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
-    <meta name="description" content="Logic picture puzzles. Every puzzle is solvable without guessing." />
+    <meta name="description" content="Logic puzzle games. Every puzzle has a unique solution you can reach without guessing." />
     <meta name="theme-color" content="#0f172a" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-title" content="Nonograms" />
+    <meta name="apple-mobile-web-app-title" content="Puzzles" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <title>Nonograms</title>
+    <title>Logic Puzzles</title>
   </head>
   <body>
-    <header class="topbar">
-      <h1>Nonograms <span id="puzzle-id" class="puzzle-id"></span></h1>
-      <nav class="actions">
-        <button id="undo" type="button">Undo</button>
-        <button id="restart" type="button">Restart</button>
-        <button id="new" type="button" class="primary">New</button>
-      </nav>
-    </header>
-    <main>
-      <div id="board" class="board" role="grid" aria-label="Nonogram board"></div>
-      <p id="status" class="status" role="status" aria-live="polite"></p>
-    </main>
-    <footer class="toolbar" role="toolbar" aria-label="Tool">
-      <button type="button" class="tool" data-tool="1" aria-pressed="true">
-        <span class="tool-icon fill-icon" aria-hidden="true"></span>Fill
-      </button>
-      <button type="button" class="tool" data-tool="2" aria-pressed="false">
-        <span class="tool-icon cross-icon" aria-hidden="true"></span>Block
-      </button>
-    </footer>
+    <section id="menu-screen" class="screen" hidden>
+      <header class="topbar">
+        <h1>Logic Puzzles</h1>
+      </header>
+      <main class="menu">
+        <div id="game-list" class="cards"></div>
+        <p class="menu-note">Endless puzzles, each with one solution you can reach by logic alone.</p>
+      </main>
+    </section>
+
+    <section id="game-screen" class="screen" hidden>
+      <header class="topbar">
+        <button id="back" type="button" class="icon-btn" aria-label="All games">‹</button>
+        <div class="title">
+          <h1 id="game-title"></h1>
+          <span class="meta"><span id="game-meta"></span> <span id="timer" class="timer" role="timer"></span></span>
+        </div>
+        <nav class="actions">
+          <button id="undo" type="button">Undo</button>
+          <button id="check" type="button">Check</button>
+          <button id="more" type="button" class="primary">New</button>
+        </nav>
+      </header>
+      <main class="play">
+        <div id="board-wrap" class="board-wrap">
+          <div id="loading" class="loading" hidden><span class="spinner" aria-hidden="true"></span>Creating puzzle…</div>
+        </div>
+        <p id="status" class="status" role="status" aria-live="polite"></p>
+      </main>
+      <footer id="toolbar" class="toolbar"></footer>
+    </section>
+
+    <dialog id="sheet" class="sheet"></dialog>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

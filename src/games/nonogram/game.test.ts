@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { BLANK, CROSS, FILL, Stroke, isSolved, lineSatisfied, newGame, type Mark } from './game';
+import { BLANK, CROSS, FILL, Stroke, isSolved, lineSatisfied, mistakes, newGame, type Mark } from './game';
 
 const blank = (n: number): Mark[] => new Array(n * n).fill(BLANK);
 
@@ -46,6 +46,18 @@ describe('game state', () => {
     expect(isSolved(state)).toBe(true);
     state.cells = state.puzzle.solution.map((v) => (v ? FILL : BLANK));
     expect(isSolved(state)).toBe(true);
+  });
+
+  it('reports mistakes against the solution', () => {
+    const state = newGame(10, 7);
+    const filled = state.puzzle.solution.indexOf(1);
+    const empty = state.puzzle.solution.indexOf(0);
+    state.cells[filled] = CROSS;
+    state.cells[empty] = FILL;
+    expect(mistakes(state.puzzle, state.cells).sort((a, b) => a - b)).toEqual([filled, empty].sort((a, b) => a - b));
+    state.cells[filled] = FILL;
+    state.cells[empty] = CROSS;
+    expect(mistakes(state.puzzle, state.cells)).toEqual([]);
   });
 
   it('checks line satisfaction', () => {

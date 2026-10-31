@@ -1,14 +1,14 @@
 {
-  "name": "nonograms",
+  "name": "pwagames",
   "private": true,
   "version": "0.1.0",
-  "description": "A Progressive Web App to play nonogram puzzles.",
+  "description": "A Progressive Web App with a collection of logic puzzle games.",
   "type": "module",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/acroca/nonograms.git"
+    "url": "git+https://github.com/acroca/pwagames.git"
   },
-  "homepage": "https://acroca.github.io/nonograms/",
+  "homepage": "https://acroca.github.io/pwagames/",
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",

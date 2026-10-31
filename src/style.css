@@ -12,6 +12,9 @@
   --accent-fg: #ffffff;
   --highlight: #dbeafe;
   --done: #94a3b8;
+  --bad: #dc2626;
+  --good: #16a34a;
+  --given: #e2e8f0;
   /* App bar sits under the iOS status bar, whose text is always white. */
   --bar: #0f172a;
   --bar-fg: #f8fafc;
@@ -21,13 +24,6 @@
   --safe-bottom: env(safe-area-inset-bottom, 0px);
   --safe-left: env(safe-area-inset-left, 0px);
   --safe-right: env(safe-area-inset-right, 0px);
-
-  /* Board fills the screen width: 10 cells + 2.6 cells of row clues. Height
-     budget leaves room for the app bar, status line and toolbar. */
-  --cell: min(
-    calc((100vw - var(--safe-left) - var(--safe-right) - 1rem) / 12.6),
-    calc((100dvh - var(--safe-top) - var(--safe-bottom) - 11rem) / 13)
-  );
 
   font-family: -apple-system, system-ui, sans-serif;
   background: var(--bg);
@@ -51,6 +47,9 @@
     --done: #475569;
     --bar: #020617;
     --bar-btn: #1e293b;
+    --bad: #f87171;
+    --good: #4ade80;
+    --given: #334155;
   }
 }
 
@@ -70,9 +69,6 @@ body {
 body {
   position: fixed;
   inset: 0;
-  display: flex;
-  flex-direction: column;
-  padding: 0 var(--safe-right) 0 var(--safe-left);
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -98,6 +94,18 @@ button:disabled {
   opacity: 0.4;
 }
 
+[hidden] {
+  display: none !important;
+}
+
+.screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 0 var(--safe-right) 0 var(--safe-left);
+}
+
 .topbar {
   display: flex;
   align-items: center;
@@ -108,6 +116,10 @@ button:disabled {
     calc(var(--safe-left) + 0.75rem);
   background: var(--bar);
   color: var(--bar-fg);
+}
+
+.topbar {
+  min-height: calc(var(--safe-top) + 3.75rem);
 }
 
 .topbar h1 {
@@ -126,32 +138,175 @@ button:disabled {
   color: var(--accent-fg);
 }
 
-.puzzle-id {
+button.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-fg);
+}
+
+.icon-btn {
+  min-width: 44px;
+  padding: 0 0 0.2rem;
+  font-size: 2.2rem;
+  line-height: 1;
+}
+
+.topbar .icon-btn {
+  background: transparent;
+  margin-left: -0.5rem;
+}
+
+.title {
+  flex: 1;
+  min-width: 0;
+}
+
+.title h1 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.meta {
   display: block;
-  font-size: 0.7rem;
-  font-weight: normal;
-  opacity: 0.6;
+  font-size: 0.75rem;
+  opacity: 0.7;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.timer:not(:empty)::before {
+  content: '· ';
 }
 
 .actions {
   display: flex;
-  gap: 0.4rem;
+  gap: 0.35rem;
 }
 
-main {
+.actions button {
+  padding: 0 0.6rem;
+  font-size: 0.95rem;
+}
+
+/* Menu */
+.menu {
   flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0.75rem 0.75rem calc(var(--safe-bottom) + 1rem);
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+  gap: 0.75rem;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.3rem;
+  padding: 0.85rem;
+  text-align: left;
+  border-radius: 1rem;
+  min-height: 9.5rem;
+}
+
+.card-icon {
+  display: block;
+  width: 2.6rem;
+  height: 2.6rem;
+  color: var(--accent);
+}
+
+.card-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.card-title {
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.card-blurb {
+  font-size: 0.8rem;
+  color: var(--muted);
+  line-height: 1.3;
+}
+
+.card-meta {
+  margin-top: auto;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.menu-note {
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.8rem;
+  margin: 1.25rem 0 0;
+}
+
+/* Game screen */
+.play {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.board-wrap {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.loading {
+  position: absolute;
+  inset: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 0;
+  gap: 0.75rem;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.spinner {
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 4px solid var(--line);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .board {
+  --cell: 32px;
+  touch-action: none;
+}
+
+/* Nonogram */
+.board-nonogram {
   display: grid;
   grid-template-columns: calc(var(--cell) * 2.6) repeat(var(--size), var(--cell));
   grid-template-rows: calc(var(--cell) * 3) repeat(var(--size), var(--cell));
-  touch-action: none;
 }
 
 .clue {
@@ -251,18 +406,47 @@ main {
   }
 }
 
+.cell.wrong {
+  background: color-mix(in srgb, var(--bad) 30%, var(--surface));
+}
+
 .status {
-  min-height: 1.5em;
-  margin: 0.75rem 0 0;
-  font-size: 1.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  margin: 0.25rem 0.75rem 0;
+  font-size: 1.1rem;
   font-weight: 600;
+  text-align: center;
+}
+
+.status.bad {
+  color: var(--bad);
+}
+
+.status.good {
+  color: var(--good);
+}
+
+.status button {
+  font-size: 1rem;
+}
+
+.toolbar {
+  padding: 0.5rem 0.75rem calc(var(--safe-bottom) + 0.75rem);
+}
+
+.toolbar:empty {
+  padding-top: 0;
 }
 
 /* Segmented tool switch within thumb reach. */
-.toolbar {
+.tools {
   display: flex;
   gap: 0.5rem;
-  padding: 0.5rem 0.75rem calc(var(--safe-bottom) + 0.75rem);
 }
 
 .tool {
@@ -276,7 +460,8 @@ main {
   font-weight: 600;
 }
 
-.tool[aria-pressed='true'] {
+.tool[aria-pressed='true'],
+.chip[aria-checked='true'] {
   border-color: var(--accent);
   box-shadow: inset 0 0 0 2px var(--accent);
   background: var(--highlight);
@@ -311,4 +496,111 @@ main {
 }
 .cross-icon::after {
   transform: rotate(-45deg);
+}
+
+/* New / restart / settings sheet */
+.sheet {
+  width: min(28rem, 100vw);
+  max-width: 100vw;
+  margin: auto auto 0;
+  padding: 0;
+  border: none;
+  border-radius: 1.25rem 1.25rem 0 0;
+  background: var(--bg);
+  color: var(--fg);
+}
+
+.sheet::backdrop {
+  background: rgb(2 6 23 / 0.55);
+}
+
+.sheet[open] {
+  animation: slide-up 0.18s ease-out;
+}
+
+@keyframes slide-up {
+  from {
+    transform: translateY(40%);
+    opacity: 0;
+  }
+}
+
+.sheet-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.1rem 1rem calc(var(--safe-bottom) + 1rem);
+  max-height: 85dvh;
+  overflow-y: auto;
+}
+
+.sheet h2 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.chip {
+  flex: 1 0 auto;
+  font-weight: 600;
+}
+
+.wide {
+  width: 100%;
+  font-weight: 600;
+}
+
+.settings {
+  margin: 0;
+  padding: 0;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.settings legend {
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.switch {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 44px;
+  padding: 0 0.75rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+}
+
+.switch input {
+  width: 1.4rem;
+  height: 1.4rem;
+  accent-color: var(--accent);
+}
+
+.rules summary {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  font-weight: 700;
+}
+
+.rules ul {
+  margin: 0;
+  padding-left: 1.2rem;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
+.rules li + li {
+  margin-top: 0.35rem;
 }

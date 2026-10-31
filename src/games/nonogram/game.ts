@@ -1,4 +1,4 @@
-import { FILLED, generatePuzzle, lineClue, type Clue, type Puzzle } from './nonogram';
+import { FILLED, generatePuzzle, lineClue, type Clue, type Puzzle } from './logic';
 
 /** Player marks on the board. */
 export const BLANK = 0;
@@ -10,12 +10,20 @@ export type Tool = typeof FILL | typeof CROSS;
 export interface GameState {
   puzzle: Puzzle;
   cells: Mark[];
-  solved: boolean;
 }
 
 export function newGame(size = 10, seed?: number): GameState {
   const puzzle = generatePuzzle(size, seed);
-  return { puzzle, cells: new Array(size * size).fill(BLANK), solved: false };
+  return { puzzle, cells: new Array(size * size).fill(BLANK) };
+}
+
+/** Cells that contradict the solution: fills on empty cells and crosses on filled ones. */
+export function mistakes(puzzle: Puzzle, cells: Mark[]): number[] {
+  const out: number[] = [];
+  cells.forEach((m, i) => {
+    if ((m === FILL && puzzle.solution[i] !== FILLED) || (m === CROSS && puzzle.solution[i] === FILLED)) out.push(i);
+  });
+  return out;
 }
 
 /** A filled region matches the solution exactly (crosses are just notes). */
@@ -80,28 +88,5 @@ export class Stroke {
       }
     }
     return changed;
-  }
-}
-
-const STORAGE_KEY = 'nonograms:v1';
-
-export function saveGame(state: GameState): void {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-  } catch {
-    // Storage may be unavailable (private mode, quota); the game still works.
-  }
-}
-
-export function loadGame(): GameState | null {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return null;
-    const state = JSON.parse(raw) as GameState;
-    const n = state.puzzle.size * state.puzzle.size;
-    if (state.cells.length !== n || state.puzzle.solution.length !== n) return null;
-    return state;
-  } catch {
-    return null;
   }
 }
