@@ -430,6 +430,98 @@ button.primary {
   -webkit-user-select: none;
 }
 
+.grid-board > .cell.wall-r {
+  border-right: 2px solid var(--line-strong);
+}
+.grid-board > .cell.wall-b {
+  border-bottom: 2px solid var(--line-strong);
+}
+
+/* Number games (shared number pad, digits and notes) */
+.num-board .cell {
+  transition: background-color 0.08s;
+}
+.num-board .val {
+  font-size: calc(var(--cell) * 0.6);
+  font-weight: 500;
+  line-height: 1;
+  color: var(--accent);
+}
+.num-board .given .val {
+  color: var(--fg);
+  font-weight: 700;
+}
+.num-board .notes {
+  position: absolute;
+  inset: 1px;
+  display: grid;
+  grid-template-columns: repeat(var(--note-cols), 1fr);
+  grid-template-rows: repeat(var(--note-rows), 1fr);
+  align-items: center;
+  justify-items: center;
+  font-size: calc(var(--cell) * 0.24);
+  line-height: 1;
+  color: var(--muted);
+  pointer-events: none;
+}
+.num-board .notes .hit {
+  color: var(--accent-fg);
+  background: var(--accent);
+  border-radius: 3px;
+  padding: 0 1px;
+}
+.num-board .cell.rel {
+  background: color-mix(in srgb, var(--highlight) 60%, var(--surface));
+}
+.num-board .cell.same {
+  background: color-mix(in srgb, var(--accent) 22%, var(--surface));
+}
+.num-board .cell.sel {
+  background: color-mix(in srgb, var(--accent) 38%, var(--surface));
+}
+.num-board .cell.clash .val {
+  color: var(--bad);
+}
+.num-board .cell.wrong {
+  background: color-mix(in srgb, var(--bad) 30%, var(--surface));
+}
+.board.solved.num-board .val {
+  animation: pop 0.4s ease-out;
+}
+
+.pad-modes {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.pad-modes .tool {
+  min-height: 44px;
+}
+.pencil {
+  font-size: 1.2rem;
+}
+.numpad {
+  display: grid;
+  grid-template-columns: repeat(var(--pad-cols), 1fr);
+  gap: 0.4rem;
+}
+.pad-btn {
+  min-width: 44px;
+  min-height: 50px;
+  padding: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.pad-btn.done {
+  opacity: 0.35;
+}
+.numpad.notes-on .pad-btn:not(.pad-erase) {
+  color: var(--accent);
+  font-size: 1.1rem;
+  font-style: italic;
+}
+
 /* Binairo */
 .board-binairo {
   --zero: #f59e0b;

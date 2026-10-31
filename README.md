@@ -14,6 +14,7 @@ alone — no guessing needed.
 | Nonogram | 10×10 |
 | Binairo (Takuzu) | 6×6, 8×8, 10×10 |
 | Queens (Star Battle) | 7×7 – 10×10 |
+| Sudoku | Easy, medium, hard |
 
 ## Shared features
 
@@ -46,12 +47,17 @@ solver and an independent rule checker.
 - **Queens**: regions are grown around a random queen placement, then reshaped by hill-climbing
   until a solver using singles, region/line confinement and one-step lookahead solves it;
   puzzles that need only singles are rejected as too easy.
+- **Sudoku**: clues are removed from a random grid while the solution stays unique and a human-
+  style solver still finishes it at the chosen level: singles (easy); locked candidates and
+  pairs (medium, singles alone must fail); triples, X-Wing, Swordfish and XY-Wing (hard,
+  medium techniques must fail).
 
 ## Project layout
 
 ```
 src/main.ts              menu + routing
-src/core/                shell (app bar, timer, undo, check, autosave), worker, input helpers
+src/core/                shell (app bar, timer, undo, check, autosave), worker, input helpers,
+                         number pad shared by the number games
 src/games/registry.ts    games in menu order
 src/games/generators.ts  generator table used by the worker
 src/games/<game>/        logic.ts (generator + solvers), index.ts (UI), tests
