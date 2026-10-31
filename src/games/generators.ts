@@ -1,4 +1,5 @@
 import { generate as binairo } from './binairo/logic';
+import { generate as killer } from './killer/logic';
 import { generatePuzzle as nonogram } from './nonogram/logic';
 import { generate as queens } from './queens/logic';
 import { generate as sudoku } from './sudoku/logic';
@@ -9,4 +10,5 @@ export const GENERATORS: Record<string, (variant: string, seed: number, extra?: 
   binairo,
   queens,
   sudoku,
+  killer,
 };

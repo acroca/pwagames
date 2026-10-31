@@ -15,6 +15,7 @@ alone — no guessing needed.
 | Binairo (Takuzu) | 6×6, 8×8, 10×10 |
 | Queens (Star Battle) | 7×7 – 10×10 |
 | Sudoku | Easy, medium, hard |
+| Killer Sudoku | Easy, medium, hard |
 
 ## Shared features
 
@@ -51,6 +52,9 @@ solver and an independent rule checker.
   style solver still finishes it at the chosen level: singles (easy); locked candidates and
   pairs (medium, singles alone must fail); triples, X-Wing, Swordfish and XY-Wing (hard,
   medium techniques must fail).
+- **Killer Sudoku**: cages are grown over a random grid, then split (or, on easy, given a
+  digit) wherever the solver gets stuck. Levels add cage combinations, the rule of 45 over
+  houses and groups of houses, and innie/outie differences; medium and hard have no givens.
 
 ## Project layout
 
