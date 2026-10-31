@@ -18,6 +18,7 @@ alone — no guessing needed.
 | Killer Sudoku | Easy, medium, hard |
 | KenKen | 4×4, 5×5, 6×6 |
 | Futoshiki | 5×5, 6×6 |
+| Kakuro | 6×6, 8×8 (including clue cells) |
 
 ## Shared features
 
@@ -62,6 +63,9 @@ solver and an independent rule checker.
   subsets solves it; puzzles that fall to cage arithmetic plus singles are rejected.
 - **Futoshiki**: signs and a few givens are drawn from a random Latin square and thinned while
   a solver using inequality chains, singles and subsets still solves it.
+- **Kakuro**: a symmetric layout of runs is filled with random digits; runs the solver can't
+  crack are refilled with low/high digits (fewer combinations) until per-run combination
+  logic solves the whole grid.
 
 ## Project layout
 

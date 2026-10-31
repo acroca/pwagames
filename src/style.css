@@ -956,3 +956,67 @@ button.primary {
 .board-futoshiki .sign.broken {
   color: var(--bad);
 }
+
+/* Kakuro */
+.board-kakuro {
+  --block: #334155;
+}
+@media (prefers-color-scheme: dark) {
+  .board-kakuro {
+    --block: #020617;
+  }
+}
+.board-kakuro .cell.block {
+  background: var(--block);
+  color: #f8fafc;
+}
+.board-kakuro .cell.clue {
+  /* "\" diagonal: across sum above it, down sum below. */
+  background:
+    linear-gradient(to bottom left, transparent calc(50% - 0.75px), rgba(248, 250, 252, 0.55) 50%, transparent calc(50% + 0.75px)),
+    var(--block);
+}
+.board-kakuro .clue-across,
+.board-kakuro .clue-down {
+  position: absolute;
+  font-size: calc(var(--cell) * 0.3);
+  font-weight: 700;
+  line-height: 1;
+}
+.board-kakuro .clue-across {
+  top: 9%;
+  right: 9%;
+}
+.board-kakuro .clue-down {
+  bottom: 9%;
+  left: 9%;
+}
+
+.combos {
+  min-height: 3.6rem;
+  margin-bottom: 0.4rem;
+  font-size: 0.95rem;
+}
+.combo-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  overflow-x: auto;
+  white-space: nowrap;
+  line-height: 1.8rem;
+}
+.combo-head {
+  min-width: 5.2rem;
+  font-weight: 700;
+}
+.combo-list {
+  display: flex;
+  gap: 0.6rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.06em;
+}
+.combo.out {
+  color: var(--muted);
+  text-decoration: line-through;
+  opacity: 0.6;
+}
