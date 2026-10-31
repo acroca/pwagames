@@ -12,6 +12,7 @@ alone — no guessing needed.
 | Game | Sizes / levels |
 | --- | --- |
 | Nonogram | 10×10 |
+| Binairo (Takuzu) | 6×6, 8×8, 10×10 |
 
 ## Shared features
 
@@ -39,6 +40,8 @@ is unique and reachable without guessing. Tests check every generated puzzle wit
 solver and an independent rule checker.
 
 - **Nonogram**: random pictures are kept only if a line solver fully solves them.
+- **Binairo**: givens are removed from a random valid grid while a line solver (no triples,
+  balance, unique lines) can still solve it, down to about 30% of the cells.
 
 ## Project layout
 
