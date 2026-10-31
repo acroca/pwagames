@@ -1,4 +1,5 @@
 import { generate as binairo } from './binairo/logic';
+import { generate as futoshiki } from './futoshiki/logic';
 import { generate as kenken } from './kenken/logic';
 import { generate as killer } from './killer/logic';
 import { generatePuzzle as nonogram } from './nonogram/logic';
@@ -13,4 +14,5 @@ export const GENERATORS: Record<string, (variant: string, seed: number, extra?: 
   sudoku,
   killer,
   kenken,
+  futoshiki,
 };

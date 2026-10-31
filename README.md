@@ -17,6 +17,7 @@ alone — no guessing needed.
 | Sudoku | Easy, medium, hard |
 | Killer Sudoku | Easy, medium, hard |
 | KenKen | 4×4, 5×5, 6×6 |
+| Futoshiki | 5×5, 6×6 |
 
 ## Shared features
 
@@ -59,6 +60,8 @@ solver and an independent rule checker.
 - **KenKen**: random cages over a random Latin square, with operations re-picked (then cages
   redrawn) until a solver using cage enumeration, cage-confined digits and naked/hidden
   subsets solves it; puzzles that fall to cage arithmetic plus singles are rejected.
+- **Futoshiki**: signs and a few givens are drawn from a random Latin square and thinned while
+  a solver using inequality chains, singles and subsets still solves it.
 
 ## Project layout
 

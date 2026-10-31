@@ -920,3 +920,39 @@ button.primary {
 .board-kenken > .cell.wall-b {
   border-bottom: 3px solid var(--line-strong);
 }
+
+/* Futoshiki */
+.board-futoshiki {
+  display: grid;
+}
+.board-futoshiki > .cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid var(--line-strong);
+  border-radius: 6px;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.board-futoshiki .cell.given {
+  background: var(--given);
+}
+.board-futoshiki .cell.given.sel {
+  background: color-mix(in srgb, var(--accent) 38%, var(--given));
+}
+.board-futoshiki .sign {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(var(--cell) * 0.46);
+  font-weight: 700;
+  line-height: 1;
+  color: var(--fg);
+  pointer-events: none;
+}
+.board-futoshiki .sign.v {
+  transform: rotate(90deg);
+}
+.board-futoshiki .sign.broken {
+  color: var(--bad);
+}
