@@ -21,6 +21,7 @@ alone — no guessing needed.
 | Kakuro | 6×6, 8×8 (including clue cells) |
 | Hitori | 6×6, 7×7, 8×8 |
 | Nurikabe | 7×7 – 10×10 |
+| Slitherlink | 5×5, 6×6, 7×7 |
 
 ## Shared features
 
@@ -74,6 +75,9 @@ solver and an independent rule checker.
 - **Nurikabe**: islands are grown on an all-sea grid (no 2×2 pools, connected sea), then a
   local search flips cells or moves numbers near whatever the solver can't decide, until a solver
   using reachability, sea/island bottlenecks, pool rules and per-island completions solves it.
+- **Slitherlink**: the loop is the outline of a random hole-free region; clues are removed in
+  random order while a solver using cell counts, dot degrees, no premature loops, inside/outside
+  colouring and 2×2 block enumeration still solves it.
 
 ## Project layout
 

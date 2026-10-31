@@ -1071,3 +1071,62 @@ button.primary {
 .board-nurikabe .cell.wrong {
   box-shadow: inset 0 0 0 3px var(--bad);
 }
+
+/* Slitherlink */
+.board-slitherlink {
+  width: calc(var(--cell) * var(--span));
+  height: calc(var(--cell) * var(--span));
+}
+.board-slitherlink svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.board-slitherlink .dot {
+  fill: var(--fg);
+}
+.board-slitherlink .dot.bad {
+  fill: var(--bad);
+  r: 0.11;
+}
+.board-slitherlink .clue {
+  font-size: 0.6px;
+  font-weight: 600;
+  text-anchor: middle;
+  dominant-baseline: central;
+  fill: var(--fg);
+}
+.board-slitherlink .clue.done {
+  fill: var(--done);
+}
+.board-slitherlink .clue.bad {
+  fill: var(--bad);
+}
+.board-slitherlink .edge .ln {
+  stroke: var(--line);
+  stroke-width: 0.02;
+  stroke-linecap: round;
+}
+.board-slitherlink .edge.on .ln {
+  stroke: var(--fill);
+  stroke-width: 0.12;
+}
+.board-slitherlink .edge .x {
+  display: none;
+  stroke: var(--muted);
+  stroke-width: 0.035;
+  stroke-linecap: round;
+}
+.board-slitherlink .edge.off .x {
+  display: inline;
+}
+.board-slitherlink .edge.off .ln {
+  stroke: transparent;
+}
+.board-slitherlink .edge.wrong .ln {
+  stroke: var(--bad);
+}
+.board-slitherlink .edge.wrong .x {
+  stroke: var(--bad);
+  stroke-width: 0.05;
+}
