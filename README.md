@@ -22,6 +22,7 @@ alone — no guessing needed.
 | Hitori | 6×6, 7×7, 8×8 |
 | Nurikabe | 7×7 – 10×10 |
 | Slitherlink | 5×5, 6×6, 7×7 |
+| Minesweeper (no guessing) | 9×9, 9×16 |
 
 ## Shared features
 
@@ -29,7 +30,8 @@ Every game has the same app bar and behaviour:
 
 - **Menu cards** list the games, with the in-progress puzzle or your best time.
 - **Undo** steps back through your moves; **Check** flags entries that contradict the
-  solution.
+  solution. (Minesweeper has neither: opening a mine ends the game, with an option to retry
+  the same board.)
 - A **timer** runs while the game is on screen and stops when it's solved; best times are kept
   per game and size.
 - Progress is **saved automatically** (per game), so you can switch games and come back.
@@ -78,6 +80,9 @@ solver and an independent rule checker.
 - **Slitherlink**: the loop is the outline of a random hole-free region; clues are removed in
   random order while a solver using cell counts, dot degrees, no premature loops, inside/outside
   colouring and 2×2 block enumeration still solves it.
+- **Minesweeper**: mines are placed after your first tap, outside its 3×3 area; while a
+  simulated player using single/pair rules, frontier enumeration and the mine count gets stuck,
+  a mine is moved off the stuck frontier (or the layout is redrawn).
 
 ## Project layout
 

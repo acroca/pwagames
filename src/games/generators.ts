@@ -4,6 +4,7 @@ import { generate as hitori } from './hitori/logic';
 import { generate as kakuro } from './kakuro/logic';
 import { generate as kenken } from './kenken/logic';
 import { generate as killer } from './killer/logic';
+import { generate as minesweeper } from './minesweeper/logic';
 import { generatePuzzle as nonogram } from './nonogram/logic';
 import { generate as nurikabe } from './nurikabe/logic';
 import { generate as queens } from './queens/logic';
@@ -23,4 +24,5 @@ export const GENERATORS: Record<string, (variant: string, seed: number, extra?: 
   hitori,
   nurikabe,
   slitherlink,
+  minesweeper,
 };
