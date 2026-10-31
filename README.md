@@ -1,13 +1,15 @@
 # Nonograms
 
-A Progressive Web App for playing 10×10 [nonogram](https://en.wikipedia.org/wiki/Nonogram) puzzles.
-Play it at **https://acroca.github.io/nonograms/** and install it to your home screen to play offline.
+A Progressive Web App for playing 10×10 [nonogram](https://en.wikipedia.org/wiki/Nonogram) puzzles,
+designed for iPhone. Open **https://acroca.github.io/nonograms/** in Safari and use
+**Share → Add to Home Screen** to install it; it then runs full-screen and works offline.
 
 ## Playing
 
-- **Fill** tool: tap/click a square to fill it. **Block** tool: mark a square as blocked (✕).
-- Drag to paint a whole row or column. Right-click always marks blocked squares.
-- Keyboard: `F`/`1` fill, `X`/`2` block, `Ctrl/⌘+Z` undo.
+- Pick a tool at the bottom: **Fill** fills squares, **Block** marks squares as blocked (✕).
+- Tap a square to toggle it, or drag a finger to paint along a row or column. Dragging only
+  changes squares in the same state as the first one, so existing marks aren't overwritten.
+- The clues of the row and column under your finger are highlighted while drawing.
 - Clues turn grey once their row/column matches. Progress is saved automatically.
 
 ## Puzzle generation

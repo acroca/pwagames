@@ -146,26 +146,34 @@ function applyStroke(r: number, c: number) {
   }
 }
 
+function highlightLines(r: number | null, c: number | null) {
+  rowClueEls.forEach((x, i) => x.classList.toggle('active', i === r));
+  colClueEls.forEach((x, i) => x.classList.toggle('active', i === c));
+}
+
+// Touch drawing: one finger paints; extra fingers are ignored. The finger
+// hides the cell, so the touched row/column clues are highlighted instead.
 boardEl.addEventListener('pointerdown', (e) => {
-  if (state.solved || stroke) return;
+  if (state.solved || stroke || !e.isPrimary) return;
   const target = cellAt(e.clientX, e.clientY);
   if (!target) return;
   e.preventDefault();
-  // Right click (or pen eraser button) always marks blocked cells.
-  const strokeTool: Tool = e.button === 2 || e.button === 5 ? CROSS : tool;
   stroke = {
-    stroke: new Stroke(SIZE, target.row, target.col, state.cells, strokeTool),
+    stroke: new Stroke(SIZE, target.row, target.col, state.cells, tool),
     pointerId: e.pointerId,
     before: [...state.cells],
     changed: false,
   };
+  highlightLines(target.row, target.col);
   applyStroke(target.row, target.col);
 });
 
 window.addEventListener('pointermove', (e) => {
   if (!stroke || e.pointerId !== stroke.pointerId) return;
   const target = cellAt(e.clientX, e.clientY);
-  if (target) applyStroke(target.row, target.col);
+  if (!target) return;
+  highlightLines(target.row, target.col);
+  applyStroke(target.row, target.col);
 });
 
 function endStroke(e: PointerEvent) {
@@ -175,22 +183,10 @@ function endStroke(e: PointerEvent) {
     commit();
   }
   stroke = null;
+  highlightLines(null, null);
 }
 window.addEventListener('pointerup', endStroke);
 window.addEventListener('pointercancel', endStroke);
-boardEl.addEventListener('contextmenu', (e) => e.preventDefault());
-
-boardEl.addEventListener('pointerover', (e) => {
-  const el = e.target as HTMLElement;
-  if (!el.classList.contains('cell')) return;
-  const r = Number(el.dataset.row);
-  const c = Number(el.dataset.col);
-  rowClueEls.forEach((x, i) => x.classList.toggle('active', i === r));
-  colClueEls.forEach((x, i) => x.classList.toggle('active', i === c));
-});
-boardEl.addEventListener('pointerleave', () => {
-  [...rowClueEls, ...colClueEls].forEach((x) => x.classList.remove('active'));
-});
 
 function undo() {
   const prev = history.pop();
@@ -216,17 +212,6 @@ newBtn.addEventListener('click', () => {
   history = [];
   saveGame(state);
   buildBoard();
-});
-
-window.addEventListener('keydown', (e) => {
-  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z') {
-    e.preventDefault();
-    undo();
-  } else if (e.key === 'f' || e.key === '1') {
-    setTool(FILL);
-  } else if (e.key === 'x' || e.key === '2') {
-    setTool(CROSS);
-  }
 });
 
 buildBoard();

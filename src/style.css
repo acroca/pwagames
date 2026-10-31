@@ -1,6 +1,6 @@
 :root {
   color-scheme: light dark;
-  --bg: #f8fafc;
+  --bg: #f1f5f9;
   --fg: #0f172a;
   --muted: #64748b;
   --surface: #ffffff;
@@ -12,13 +12,28 @@
   --accent-fg: #ffffff;
   --highlight: #dbeafe;
   --done: #94a3b8;
+  /* App bar sits under the iOS status bar, whose text is always white. */
+  --bar: #0f172a;
+  --bar-fg: #f8fafc;
+  --bar-btn: #1e293b;
 
-  /* Row clues take 2.6 cells of width, column clues 3 cells of height. */
-  --cell: min(calc((100vw - 2rem) / 12.8), calc((100dvh - 12rem) / 13.2), 44px);
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
 
-  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  /* Board fills the screen width: 10 cells + 2.6 cells of row clues. Height
+     budget leaves room for the app bar, status line and toolbar. */
+  --cell: min(
+    calc((100vw - var(--safe-left) - var(--safe-right) - 1rem) / 12.6),
+    calc((100dvh - var(--safe-top) - var(--safe-bottom) - 11rem) / 13)
+  );
+
+  font-family: -apple-system, system-ui, sans-serif;
   background: var(--bg);
   color: var(--fg);
+  -webkit-text-size-adjust: 100%;
+  touch-action: manipulation;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -34,6 +49,8 @@
     --accent: #3b82f6;
     --highlight: #1e3a8a;
     --done: #475569;
+    --bar: #020617;
+    --bar-btn: #1e293b;
   }
 }
 
@@ -41,42 +58,44 @@
   box-sizing: border-box;
 }
 
+/* Lock the page in place: no rubber-band scrolling, zooming or text callouts. */
 html,
 body {
   margin: 0;
   height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
 }
 
 body {
+  position: fixed;
+  inset: 0;
   display: flex;
   flex-direction: column;
-  min-height: 100dvh;
-  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom)
-    env(safe-area-inset-left);
+  padding: 0 var(--safe-right) 0 var(--safe-left);
   -webkit-tap-highlight-color: transparent;
-  user-select: none;
+  -webkit-touch-callout: none;
   -webkit-user-select: none;
+  user-select: none;
 }
 
 button {
   font: inherit;
   color: inherit;
+  min-height: 44px;
   background: var(--surface);
   border: 1px solid var(--line);
-  border-radius: 0.5rem;
-  padding: 0.45rem 0.85rem;
-  cursor: pointer;
+  border-radius: 0.75rem;
+  padding: 0 0.9rem;
+  transition: transform 0.08s;
+}
+
+button:active:not(:disabled) {
+  transform: scale(0.95);
 }
 
 button:disabled {
   opacity: 0.4;
-  cursor: default;
-}
-
-button.primary {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: var(--accent-fg);
 }
 
 .topbar {
@@ -84,18 +103,34 @@ button.primary {
   align-items: center;
   justify-content: space-between;
   gap: 0.5rem;
-  padding: 0.75rem 1rem;
+  margin: 0 calc(-1 * var(--safe-right)) 0 calc(-1 * var(--safe-left));
+  padding: calc(var(--safe-top) + 0.5rem) calc(var(--safe-right) + 0.75rem) 0.5rem
+    calc(var(--safe-left) + 0.75rem);
+  background: var(--bar);
+  color: var(--bar-fg);
 }
 
 .topbar h1 {
   margin: 0;
-  font-size: 1.25rem;
+  font-size: 1.15rem;
+  line-height: 1.1;
+}
+
+.topbar button {
+  background: var(--bar-btn);
+  border-color: transparent;
+}
+
+.topbar button.primary {
+  background: var(--accent);
+  color: var(--accent-fg);
 }
 
 .puzzle-id {
-  font-size: 0.8rem;
+  display: block;
+  font-size: 0.7rem;
   font-weight: normal;
-  color: var(--muted);
+  opacity: 0.6;
 }
 
 .actions {
@@ -109,7 +144,7 @@ main {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 0 1rem;
+  min-height: 0;
 }
 
 .board {
@@ -122,10 +157,11 @@ main {
 .clue {
   display: flex;
   gap: calc(var(--cell) * 0.2);
-  font-size: calc(var(--cell) * 0.48);
+  font-size: calc(var(--cell) * 0.5);
   font-variant-numeric: tabular-nums;
   font-weight: 600;
-  border-radius: 0.25rem;
+  border-radius: 0.3rem;
+  transition: background-color 0.1s;
 }
 
 .col-clue {
@@ -133,14 +169,14 @@ main {
   justify-content: flex-end;
   align-items: center;
   gap: 0;
-  padding-bottom: 0.25rem;
-  line-height: 1.15;
+  padding-bottom: 0.2rem;
+  line-height: 1.12;
 }
 
 .row-clue {
   justify-content: flex-end;
   align-items: center;
-  padding-right: 0.4rem;
+  padding-right: 0.3rem;
 }
 
 .clue.active {
@@ -156,7 +192,6 @@ main {
   background: var(--surface);
   border-right: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
-  cursor: pointer;
 }
 
 /* Thick lines every 5 cells and around the board. */
@@ -200,9 +235,6 @@ main {
   transform: rotate(-45deg);
 }
 
-.board.solved .cell {
-  cursor: default;
-}
 .board.solved .cell.crossed::before,
 .board.solved .cell.crossed::after {
   display: none;
@@ -221,43 +253,45 @@ main {
 
 .status {
   min-height: 1.5em;
-  margin: 1rem 0 0;
+  margin: 0.75rem 0 0;
   font-size: 1.25rem;
   font-weight: 600;
 }
 
+/* Segmented tool switch within thumb reach. */
 .toolbar {
   display: flex;
-  justify-content: center;
-  gap: 0.75rem;
-  padding: 0.75rem 1rem 1.25rem;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem calc(var(--safe-bottom) + 0.75rem);
 }
 
 .tool {
+  flex: 1;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  min-width: 7rem;
   justify-content: center;
-  padding: 0.7rem 1.1rem;
-  font-size: 1rem;
+  gap: 0.6rem;
+  min-height: 56px;
+  font-size: 1.05rem;
+  font-weight: 600;
 }
 
 .tool[aria-pressed='true'] {
   border-color: var(--accent);
-  box-shadow: 0 0 0 2px var(--accent);
+  box-shadow: inset 0 0 0 2px var(--accent);
+  background: var(--highlight);
 }
 
 .tool-icon {
   position: relative;
   display: inline-block;
-  width: 1.1rem;
-  height: 1.1rem;
+  width: 1.2rem;
+  height: 1.2rem;
 }
 
 .fill-icon {
   background: var(--fill);
-  border-radius: 2px;
+  border-radius: 3px;
 }
 
 .cross-icon::before,
@@ -267,9 +301,10 @@ main {
   left: 0;
   right: 0;
   top: 50%;
-  height: 2px;
-  margin-top: -1px;
+  height: 2.5px;
+  margin-top: -1.25px;
   background: var(--cross);
+  border-radius: 1px;
 }
 .cross-icon::before {
   transform: rotate(45deg);
