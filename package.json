@@ -1,0 +1,26 @@
+{
+  "name": "nonograms",
+  "private": true,
+  "version": "0.1.0",
+  "description": "A Progressive Web App to play nonogram puzzles.",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/acroca/nonograms.git"
+  },
+  "homepage": "https://acroca.github.io/nonograms/",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "icons": "node scripts/generate-icons.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.5",
+    "vite-plugin-pwa": "^2.0.0",
+    "vitest": "^5.0.5"
+  }
+}
