@@ -13,6 +13,7 @@ alone — no guessing needed.
 | --- | --- |
 | Nonogram | 10×10 |
 | Binairo (Takuzu) | 6×6, 8×8, 10×10 |
+| Queens (Star Battle) | 7×7 – 10×10 |
 
 ## Shared features
 
@@ -42,6 +43,9 @@ solver and an independent rule checker.
 - **Nonogram**: random pictures are kept only if a line solver fully solves them.
 - **Binairo**: givens are removed from a random valid grid while a line solver (no triples,
   balance, unique lines) can still solve it, down to about 30% of the cells.
+- **Queens**: regions are grown around a random queen placement, then reshaped by hill-climbing
+  until a solver using singles, region/line confinement and one-step lookahead solves it;
+  puzzles that need only singles are rejected as too easy.
 
 ## Project layout
 
