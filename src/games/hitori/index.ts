@@ -2,6 +2,7 @@ import { cyclePaint } from '../../core/pointer';
 import type { GameModule } from '../../core/types';
 import { el } from '../../core/util';
 import { DEFAULT_VARIANT, VARIANTS, type HitoriPuzzle } from './logic';
+import { t } from '../../core/i18n';
 
 const NORMAL = 0;
 const SHADED = 1;
@@ -28,13 +29,6 @@ export const hitori: GameModule<HitoriPuzzle, HitoriState> = {
   id: 'hitori',
   title: 'Hitori',
   blurb: 'Shade out repeated numbers while keeping the rest connected.',
-  rules: [
-    'Shade cells so no number appears more than once in any row or column among the unshaded cells.',
-    'Only shade a cell to remove a repeated number.',
-    'Shaded cells may not touch each other side by side (diagonally is fine).',
-    'All unshaded cells must stay connected in one area.',
-    'Tap to cycle plain → shaded → circled (known to stay unshaded). Drag to apply the same mark to several cells.',
-  ],
   icon: `<svg viewBox="0 0 30 30"><rect x="2" y="2" width="26" height="26" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><rect x="15" y="2" width="13" height="13" fill="currentColor"/><circle cx="8.5" cy="21.5" r="5" fill="none" stroke="currentColor" stroke-width="1.5"/><g font-family="system-ui,sans-serif" font-weight="700" font-size="8" text-anchor="middle" fill="currentColor"><text x="8.5" y="11.5">3</text><text x="8.5" y="24.3">3</text><text x="21.5" y="24.5">1</text></g></svg>`,
   variants: VARIANTS,
   defaultVariant: DEFAULT_VARIANT,
@@ -51,7 +45,7 @@ export const hitori: GameModule<HitoriPuzzle, HitoriState> = {
     board.classList.add('grid-board');
     board.style.setProperty('--n', String(n));
     board.setAttribute('role', 'grid');
-    board.setAttribute('aria-label', 'Hitori board');
+    board.setAttribute('aria-label', t('Hitori board'));
     const cells = numbers.map((num, i) => {
       const cell = el('div', 'cell');
       cell.dataset.i = String(i);
@@ -61,7 +55,7 @@ export const hitori: GameModule<HitoriPuzzle, HitoriState> = {
       return cell;
     });
     ctx.fit(n, n);
-    ctx.toolbar.append(el('p', 'hint', 'Tap: shade → circle → clear. Drag to paint.'));
+    ctx.toolbar.append(el('p', 'hint', t('Tap: shade → circle → clear. Drag to paint.')));
 
     const render = () => {
       const clash = touching(n, ctx.state.cells);
@@ -71,7 +65,7 @@ export const hitori: GameModule<HitoriPuzzle, HitoriState> = {
         cell.classList.toggle('circled', v === CIRCLED);
         cell.classList.toggle('clash', clash.has(i));
         cell.classList.remove('wrong');
-        cell.setAttribute('aria-label', `Row ${Math.floor(i / n) + 1}, column ${(i % n) + 1}: ${numbers[i]}, ${NAMES[v]}`);
+        cell.setAttribute('aria-label', `${t('Row {r}, column {c}', { r: Math.floor(i / n) + 1, c: (i % n) + 1 })}: ${numbers[i]}, ${t(NAMES[v])}`);
       });
     };
 

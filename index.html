@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
-    <meta name="description" content="Logic puzzle games. Every puzzle has a unique solution you can reach without guessing." />
+    <meta name="description" data-i18n-content="Logic puzzle games. Every puzzle has a unique solution you can reach without guessing." content="Logic puzzle games. Every puzzle has a unique solution you can reach without guessing." />
     <meta name="theme-color" content="#0f172a" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -16,30 +16,32 @@
   <body>
     <section id="menu-screen" class="screen" hidden>
       <header class="topbar">
-        <h1>Logic Puzzles</h1>
+        <h1 data-i18n="Logic Puzzles">Logic Puzzles</h1>
+        <button id="rules-btn" type="button" data-i18n="Rules">Rules</button>
+        <div id="lang-select" class="lang-select" role="group" data-i18n-label="Language" aria-label="Language"></div>
       </header>
       <main class="menu">
         <div id="game-list" class="cards"></div>
-        <p class="menu-note">Endless puzzles, each with one solution you can reach by logic alone.</p>
+        <p class="menu-note" data-i18n="Endless puzzles, each with one solution you can reach by logic alone.">Endless puzzles, each with one solution you can reach by logic alone.</p>
       </main>
     </section>
 
     <section id="game-screen" class="screen" hidden>
       <header class="topbar">
-        <button id="back" type="button" class="icon-btn" aria-label="All games">‹</button>
+        <button id="back" type="button" class="icon-btn" data-i18n-label="All games" aria-label="All games">‹</button>
         <div class="title">
           <h1 id="game-title"></h1>
           <span class="meta"><span id="game-meta"></span> <span id="timer" class="timer" role="timer"></span></span>
         </div>
         <nav class="actions">
-          <button id="undo" type="button">Undo</button>
-          <button id="check" type="button">Check</button>
-          <button id="more" type="button" class="primary">New</button>
+          <button id="undo" type="button" data-i18n="Undo">Undo</button>
+          <button id="check" type="button" data-i18n="Check">Check</button>
+          <button id="more" type="button" class="primary" data-i18n="New">New</button>
         </nav>
       </header>
       <main class="play">
         <div id="board-wrap" class="board-wrap">
-          <div id="loading" class="loading" hidden><span class="spinner" aria-hidden="true"></span>Creating puzzle…</div>
+          <div id="loading" class="loading" hidden><span class="spinner" aria-hidden="true"></span><span data-i18n="Creating puzzle…">Creating puzzle…</span></div>
         </div>
         <p id="status" class="status" role="status" aria-live="polite"></p>
       </main>
@@ -47,6 +49,7 @@
     </section>
 
     <dialog id="sheet" class="sheet"></dialog>
+    <dialog id="guide" class="sheet"></dialog>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

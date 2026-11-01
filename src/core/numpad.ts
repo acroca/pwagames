@@ -1,6 +1,7 @@
 import { trackStrokes } from './pointer';
 import type { GameContext } from './types';
 import { el } from './util';
+import { t } from './i18n';
 
 /** Player state for the number-entry games (Sudoku, KenKen, Kakuro…). */
 export interface PadState {
@@ -72,7 +73,7 @@ export function mountPad(opts: PadOptions): Pad {
   // Number pad: digits plus erase, and a notes toggle.
   const pad = el('div', 'numpad');
   pad.setAttribute('role', 'group');
-  pad.setAttribute('aria-label', 'Number pad');
+  pad.setAttribute('aria-label', t('Number pad'));
   const cols = max <= 6 ? max + 1 : Math.ceil((max + 1) / 2);
   pad.style.setProperty('--pad-cols', String(cols));
   const digitBtns: HTMLButtonElement[] = [];
@@ -85,14 +86,14 @@ export function mountPad(opts: PadOptions): Pad {
   }
   const erase = el('button', 'pad-btn pad-erase', '⌫');
   erase.type = 'button';
-  erase.setAttribute('aria-label', 'Erase');
+  erase.setAttribute('aria-label', t('Erase'));
   erase.addEventListener('click', () => clear());
   pad.append(erase);
 
   const modes = el('div', 'pad-modes');
   const notesBtn = el('button', 'tool notes-toggle');
   notesBtn.type = 'button';
-  notesBtn.append(el('span', 'pencil', '✎'), el('span', '', 'Notes'));
+  notesBtn.append(el('span', 'pencil', '✎'), el('span', '', t('Notes')));
   notesBtn.addEventListener('click', () => {
     notesMode = !notesMode;
     renderPad();
