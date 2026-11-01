@@ -64,6 +64,7 @@ export function initInstall() {
 
 export function initShare() {
   const btn = document.querySelector<HTMLButtonElement>('#share-btn')!;
+  const labelEl = document.querySelector<HTMLElement>('#share-label')!;
   btn.addEventListener('click', async () => {
     const data = { title: t('Logic Puzzles'), text: t('Play free logic puzzles with me!'), url: location.origin + location.pathname };
     try {
@@ -71,9 +72,9 @@ export function initShare() {
         await navigator.share(data);
       } else {
         await navigator.clipboard.writeText(data.url);
-        const label = btn.textContent;
-        btn.textContent = t('Link copied!');
-        setTimeout(() => (btn.textContent = label), 2000);
+        const label = labelEl.textContent;
+        labelEl.textContent = t('Link copied!');
+        setTimeout(() => (labelEl.textContent = label), 2000);
       }
     } catch {
       // Share sheet dismissed or clipboard unavailable.

@@ -1413,7 +1413,7 @@ button.primary {
 
 /* Install + about footer */
 .install-btn {
-  margin-top: 1rem;
+  margin-bottom: 1rem;
   background: var(--accent);
   color: var(--accent-fg);
   border-color: var(--accent);
@@ -1429,10 +1429,15 @@ button.primary {
   padding-bottom: var(--safe-bottom);
 }
 
-.about h2 {
-  margin: 0;
-  font-size: 1rem;
-  text-align: center;
+.share-btn {
+  align-self: center;
+  padding: 0.5rem 1.1rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--accent);
+  font: inherit;
+  font-weight: 600;
 }
 
 .about .menu-note {

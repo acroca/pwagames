@@ -109,6 +109,19 @@ onLangChange(() => {
   }
 });
 
+// iOS Safari ignores user-scalable=no; block double-tap and pinch zoom explicitly.
+let lastTouchEnd = 0;
+document.addEventListener(
+  'touchend',
+  (e) => {
+    const now = Date.now();
+    if (now - lastTouchEnd < 350) e.preventDefault();
+    lastTouchEnd = now;
+  },
+  { passive: false },
+);
+document.addEventListener('gesturestart', (e) => e.preventDefault());
+
 initInstall();
 initShare();
 applyStatic();
