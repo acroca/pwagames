@@ -73,6 +73,7 @@ export class GameScreen {
     $('#back').addEventListener('click', () => this.onBack());
     this.undoBtn.addEventListener('click', () => this.undo());
     this.checkBtn.addEventListener('click', () => this.check());
+    $('#game-rules').addEventListener('click', () => this.game && openGuide(this.game.id));
     $('#more').addEventListener('click', () => this.openSheet());
     new ResizeObserver(() => this.applyFit()).observe(this.wrap);
     document.addEventListener('visibilitychange', () => this.syncTimer());
