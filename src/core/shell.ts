@@ -1,8 +1,10 @@
 import { generatePuzzle } from './generate';
+import { openGuide } from './guide';
+import { t } from './i18n';
 import { randomSeed } from './rng';
 import { load, save } from './storage';
 import type { BasePuzzle, GameContext, GameModule, GameView } from './types';
-import { el, formatTime, plural } from './util';
+import { el, formatTime } from './util';
 
 const MAX_HISTORY = 300;
 /** Only show the spinner if generation is noticeably slow. */
@@ -81,8 +83,8 @@ export class GameScreen {
     this.close();
     this.game = game;
     this.screen.hidden = false;
-    this.titleEl.textContent = game.title;
-    document.title = game.title;
+    this.titleEl.textContent = t(game.title);
+    document.title = t(game.title);
     this.undoBtn.hidden = !!game.noUndo;
     this.checkBtn.hidden = !!game.noCheck;
     this.settings = Object.fromEntries((game.settings ?? []).map((s) => [s.id, s.default]));
@@ -132,8 +134,8 @@ export class GameScreen {
       } catch (err) {
         if (token !== this.loadToken) return;
         console.error(err);
-        this.setStatus("Couldn't create a puzzle.", 'bad');
-        this.addStatusAction('Try again', () => void this.newPuzzle(variant), true);
+        this.setStatus(t("Couldn't create a puzzle."), 'bad');
+        this.addStatusAction(t('Try again'), () => void this.newPuzzle(variant), true);
         return;
       } finally {
         clearTimeout(spinner);
@@ -247,7 +249,7 @@ export class GameScreen {
     if (!game) return;
     const variant = game.variants.find((v) => v.id === session?.variant);
     const id = session ? `#${session.puzzle.seed.toString(36).toUpperCase()}` : '';
-    this.metaEl.textContent = [game.variants.length > 1 ? variant?.label : '', id].filter(Boolean).join(' · ');
+    this.metaEl.textContent = [game.variants.length > 1 ? variant && t(variant.label) : '', id].filter(Boolean).join(' · ');
     this.undoBtn.disabled = !session || this.finished || this.history.length === 0;
     this.checkBtn.disabled =
       !session || this.finished || !game.hasProgress(session.puzzle, session.state);
@@ -272,9 +274,9 @@ export class GameScreen {
     const wrong = game.mistakes(session.puzzle, session.state);
     if (wrong.length) {
       view.showMistakes(wrong);
-      this.setStatus(`${plural(wrong.length, 'mistake')} found`, 'bad', 3000);
+      this.setStatus(t(wrong.length === 1 ? '{n} mistake found' : '{n} mistakes found', { n: wrong.length }), 'bad', 3000);
     } else {
-      this.setStatus('No mistakes so far ✓', 'good', 3000);
+      this.setStatus(t('No mistakes so far ✓'), 'good', 3000);
     }
   }
 
@@ -294,17 +296,18 @@ export class GameScreen {
     const { game, session } = this;
     if (!game || !session) return;
     const best = bestTimes()[`${game.id}:${session.variant}`];
-    const suffix = best !== undefined && best >= session.elapsed ? ' · New best!' : best ? ` · Best ${formatTime(best)}` : '';
-    this.setStatus(`Solved in ${formatTime(session.elapsed)} 🎉${suffix}`, 'win');
-    this.addStatusAction('Next puzzle', () => void this.newPuzzle(session.variant), true);
+    const suffix =
+      best !== undefined && best >= session.elapsed ? t(' · New best!') : best ? t(' · Best {time}', { time: formatTime(best) }) : '';
+    this.setStatus(t('Solved in {time} 🎉', { time: formatTime(session.elapsed) }) + suffix, 'win');
+    this.addStatusAction(t('Next puzzle'), () => void this.newPuzzle(session.variant), true);
   }
 
   private showLoss() {
     const { game, session } = this;
     if (!game || !session) return;
-    this.setStatus('💥 Boom!', 'bad');
+    this.setStatus(t('💥 Boom!'), 'bad');
     if (game.retryState) {
-      this.addStatusAction('Retry board', () => {
+      this.addStatusAction(t('Retry board'), () => {
         if (!this.session || !game.retryState) return;
         this.session.state = game.retryState(this.session.puzzle, this.session.state);
         this.session.lost = false;
@@ -313,7 +316,7 @@ export class GameScreen {
         this.commit();
       });
     }
-    this.addStatusAction('New puzzle', () => void this.newPuzzle(session.variant), true);
+    this.addStatusAction(t('New puzzle'), () => void this.newPuzzle(session.variant), true);
   }
 
   private setStatus(text: string, tone = '', clearAfter = 0) {
@@ -379,13 +382,13 @@ export class GameScreen {
     const body = el('form', 'sheet-body');
     body.method = 'dialog';
 
-    body.append(el('h2', '', game.title));
+    body.append(el('h2', '', t(game.title)));
     if (game.variants.length > 1) {
       const chips = el('div', 'chips');
       chips.setAttribute('role', 'radiogroup');
-      chips.setAttribute('aria-label', 'Puzzle type');
+      chips.setAttribute('aria-label', t('Puzzle type'));
       for (const v of game.variants) {
-        const chip = el('button', 'chip', v.label);
+        const chip = el('button', 'chip', t(v.label));
         chip.type = 'button';
         chip.setAttribute('role', 'radio');
         chip.setAttribute('aria-checked', String(v.id === variant));
@@ -398,23 +401,23 @@ export class GameScreen {
       body.append(chips);
     }
 
-    const newBtn = el('button', 'primary wide', 'New puzzle');
+    const newBtn = el('button', 'primary wide', t('New puzzle'));
     newBtn.type = 'button';
     newBtn.addEventListener('click', () => {
       const s = this.session;
-      if (s && !this.finished && game.hasProgress(s.puzzle, s.state) && !confirm('Abandon this puzzle and start a new one?'))
+      if (s && !this.finished && game.hasProgress(s.puzzle, s.state) && !confirm(t('Abandon this puzzle and start a new one?')))
         return;
       this.sheet.close();
       void this.newPuzzle(variant);
     });
     body.append(newBtn);
 
-    const restartBtn = el('button', 'wide', 'Restart this puzzle');
+    const restartBtn = el('button', 'wide', t('Restart this puzzle'));
     restartBtn.type = 'button';
     restartBtn.disabled = !session || !game.hasProgress(session.puzzle, session.state) || session.lost;
     restartBtn.addEventListener('click', () => {
       const s = this.session;
-      if (!s || !confirm('Clear the board and start this puzzle over?')) return;
+      if (!s || !confirm(t('Clear the board and start this puzzle over?'))) return;
       this.sheet.close();
       if (!this.finished) this.history.push(JSON.stringify(s.state));
       s.state = game.retryState ? game.retryState(s.puzzle, s.state) : game.newState(s.puzzle);
@@ -427,7 +430,7 @@ export class GameScreen {
 
     if (game.settings?.length) {
       const box = el('fieldset', 'settings');
-      box.append(el('legend', '', 'Settings'));
+      box.append(el('legend', '', t('Settings')));
       for (const s of game.settings) {
         const label = el('label', 'switch');
         const input = el('input');
@@ -438,20 +441,21 @@ export class GameScreen {
           save(settingsKey(game.id), this.settings);
           this.view?.render();
         });
-        label.append(el('span', '', s.label), input);
+        label.append(el('span', '', t(s.label)), input);
         box.append(label);
       }
       body.append(box);
     }
 
-    const rules = el('details', 'rules');
-    rules.append(el('summary', '', 'How to play'));
-    const list = el('ul');
-    game.rules.forEach((r) => list.append(el('li', '', r)));
-    rules.append(list);
-    body.append(rules);
+    const rulesBtn = el('button', 'wide', t('How to play'));
+    rulesBtn.type = 'button';
+    rulesBtn.addEventListener('click', () => {
+      this.sheet.close();
+      openGuide(game.id);
+    });
+    body.append(rulesBtn);
 
-    const closeBtn = el('button', 'wide', 'Close');
+    const closeBtn = el('button', 'wide', t('Close'));
     closeBtn.type = 'submit';
     body.append(closeBtn);
 

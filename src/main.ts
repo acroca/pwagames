@@ -1,5 +1,7 @@
 import { registerSW } from 'virtual:pwa-register';
 import { GameScreen, bestTimes, loadSession, sessionKey, type Saved } from './core/shell';
+import { openGuide } from './core/guide';
+import { LANGS, applyStatic, lang, onLangChange, setLang, t } from './core/i18n';
 import { load, loadRaw, save } from './core/storage';
 import { el, formatTime } from './core/util';
 import { GAMES } from './games/registry';
@@ -7,7 +9,6 @@ import './style.css';
 
 registerSW({ immediate: true });
 
-const APP_TITLE = 'Logic Puzzles';
 const menuScreen = document.querySelector<HTMLElement>('#menu-screen')!;
 const list = document.querySelector<HTMLElement>('#game-list')!;
 
@@ -36,17 +37,17 @@ function renderMenu() {
     icon.innerHTML = game.icon;
     icon.setAttribute('aria-hidden', 'true');
     const session = loadSession(game);
-    const label = (variant: string) => game.variants.find((v) => v.id === variant)?.label ?? variant;
+    const label = (variant: string) => t(game.variants.find((v) => v.id === variant)?.label ?? variant);
     let meta = '';
     if (session && !session.solved && !session.lost && game.hasProgress(session.puzzle, session.state)) {
       meta = `▶ ${game.variants.length > 1 ? `${label(session.variant)} · ` : ''}${formatTime(session.elapsed)}`;
     } else {
       const times = game.variants
         .filter((v) => `${game.id}:${v.id}` in best)
-        .map((v) => `${game.variants.length > 1 ? `${v.label} ` : ''}${formatTime(best[`${game.id}:${v.id}`])}`);
+        .map((v) => `${game.variants.length > 1 ? `${t(v.label)} ` : ''}${formatTime(best[`${game.id}:${v.id}`])}`);
       if (times.length) meta = `★ ${times[0]}`;
     }
-    card.append(icon, el('span', 'card-title', game.title), el('span', 'card-blurb', game.blurb));
+    card.append(icon, el('span', 'card-title', t(game.title)), el('span', 'card-blurb', t(game.blurb)));
     if (meta) card.append(el('span', 'card-meta', meta));
     card.addEventListener('click', () => {
       history.pushState({ fromMenu: true }, '', `#/${game.id}`);
@@ -75,7 +76,7 @@ function route() {
     screen.open(game);
   } else {
     screen.close();
-    document.title = APP_TITLE;
+    document.title = t('Logic Puzzles');
     renderMenu();
     menuScreen.hidden = false;
   }
@@ -84,5 +85,30 @@ function route() {
 window.addEventListener('hashchange', route);
 window.addEventListener('popstate', route);
 
+function renderLangSelect() {
+  const box = document.querySelector<HTMLElement>('#lang-select')!;
+  box.replaceChildren();
+  for (const { id, label } of LANGS) {
+    const btn = el('button', '', id.toUpperCase());
+    btn.type = 'button';
+    btn.lang = id;
+    btn.setAttribute('aria-label', label);
+    btn.setAttribute('aria-pressed', String(id === lang()));
+    btn.addEventListener('click', () => setLang(id));
+    box.append(btn);
+  }
+}
+
+document.querySelector('#rules-btn')!.addEventListener('click', () => openGuide());
+onLangChange(() => {
+  renderLangSelect();
+  if (!menuScreen.hidden) {
+    document.title = t('Logic Puzzles');
+    renderMenu();
+  }
+});
+
+applyStatic();
+renderLangSelect();
 migrateLegacyNonogram();
 route();

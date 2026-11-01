@@ -35,6 +35,10 @@ Every game has the same app bar and behaviour:
 - A **timer** runs while the game is on screen and stops when it's solved; best times are kept
   per game and size.
 - Progress is **saved automatically** (per game), so you can switch games and come back.
+- **English and Spanish**: the language follows the phone's language by default; switch it with
+  the EN / ES selector on the menu. Translations live in `src/core/es.ts` and `src/core/guides.ts`.
+- **Rules**: the menu's Rules button (and *How to play* in each game's sheet) explains every game
+  with examples.
 - **New** opens a sheet to pick a size or difficulty, start a new puzzle, restart the current
   one, change game settings, and read the rules.
 

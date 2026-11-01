@@ -25,8 +25,6 @@ export interface GameModule<P extends BasePuzzle = any, S = any> {
   title: string;
   /** One-line pitch on the menu card. */
   blurb: string;
-  /** How to play, shown in the game's sheet. One rule per entry. */
-  rules: string[];
   /** Inline SVG for the menu card. */
   icon: string;
   variants: Variant[];

@@ -1,6 +1,7 @@
 import type { GameModule } from '../../core/types';
 import { el } from '../../core/util';
 import { DEFAULT_VARIANT, VARIANTS, type SlitherlinkPuzzle } from './logic';
+import { t } from '../../core/i18n';
 
 const EMPTY = 0;
 const LINE = 1;
@@ -67,12 +68,6 @@ export const slitherlink: GameModule<SlitherlinkPuzzle, SlitherlinkState> = {
   id: 'slitherlink',
   title: 'Slitherlink',
   blurb: 'Draw one closed loop that matches every number.',
-  rules: [
-    'Draw a single closed loop along the dotted grid lines.',
-    'Each number tells how many of the four sides of its cell are part of the loop.',
-    'The loop never crosses itself or branches.',
-    'Tap between two dots to cycle line → ✕ → empty. Drag from dot to dot to draw lines; a drag that starts on a line erases.',
-  ],
   icon: `<svg viewBox="0 0 30 30"><g fill="currentColor"><circle cx="4" cy="4" r="1.6"/><circle cx="15" cy="4" r="1.6"/><circle cx="26" cy="4" r="1.6"/><circle cx="4" cy="15" r="1.6"/><circle cx="15" cy="15" r="1.6"/><circle cx="26" cy="15" r="1.6"/><circle cx="4" cy="26" r="1.6"/><circle cx="15" cy="26" r="1.6"/><circle cx="26" cy="26" r="1.6"/></g><path d="M4 4h22v11H15v11H4z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/><text x="20.5" y="24" font-family="system-ui,sans-serif" font-weight="700" font-size="9" text-anchor="middle" fill="currentColor">1</text></svg>`,
   variants: VARIANTS,
   defaultVariant: DEFAULT_VARIANT,
@@ -94,7 +89,7 @@ export const slitherlink: GameModule<SlitherlinkPuzzle, SlitherlinkState> = {
     const svg = document.createElementNS(SVG_NS, 'svg');
     svg.setAttribute('viewBox', `${-PAD} ${-PAD} ${span} ${span}`);
     svg.setAttribute('role', 'img');
-    svg.setAttribute('aria-label', 'Slitherlink board');
+    svg.setAttribute('aria-label', t('Slitherlink board'));
     board.append(svg);
     const make = (tag: string, attrs: Record<string, string | number>, parent: Element = svg) => {
       const node = document.createElementNS(SVG_NS, tag);
@@ -127,7 +122,7 @@ export const slitherlink: GameModule<SlitherlinkPuzzle, SlitherlinkState> = {
       make('circle', { cx: d % (n + 1), cy: Math.floor(d / (n + 1)), r: 0.07, class: 'dot' }),
     );
     ctx.fit(span, span);
-    ctx.toolbar.append(el('p', 'hint', 'Tap a gap: line → ✕ → empty. Drag dot to dot to draw.'));
+    ctx.toolbar.append(el('p', 'hint', t('Tap a gap: line → ✕ → empty. Drag dot to dot to draw.')));
 
     const render = () => {
       const s = ctx.state.edges;

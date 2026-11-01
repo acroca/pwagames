@@ -2,6 +2,7 @@ import { cyclePaint } from '../../core/pointer';
 import type { GameModule } from '../../core/types';
 import { el } from '../../core/util';
 import { DEFAULT_VARIANT, EMPTY, VARIANTS, type BinairoPuzzle } from './logic';
+import { t } from '../../core/i18n';
 
 export interface BinairoState {
   /** Player entries: EMPTY, 0 or 1 (givens are read from the puzzle). */
@@ -14,14 +15,6 @@ export const binairo: GameModule<BinairoPuzzle, BinairoState> = {
   id: 'binairo',
   title: 'Binairo',
   blurb: 'Fill the grid with 0s and 1s, balanced and never three in a row.',
-  rules: [
-    'Fill every cell with 0 (orange) or 1 (blue).',
-    'No more than two equal values next to each other in a row or column.',
-    'Each row and column has as many 0s as 1s.',
-    'No two rows are the same, and no two columns are the same.',
-    'Tap a cell to cycle empty → 0 → 1. Drag to copy the first cell’s new value along your path.',
-    'Square tiles are given and can’t be changed.',
-  ],
   icon: `<svg viewBox="0 0 30 30"><g font-family="system-ui,sans-serif" font-weight="700" font-size="11" text-anchor="middle"><circle cx="8" cy="8" r="6.5" fill="#f59e0b"/><circle cx="22" cy="8" r="6.5" fill="currentColor"/><circle cx="8" cy="22" r="6.5" fill="currentColor"/><circle cx="22" cy="22" r="6.5" fill="#f59e0b"/><text x="8" y="12" fill="#fff">0</text><text x="22" y="12" fill="#fff">1</text><text x="8" y="26" fill="#fff">1</text><text x="22" y="26" fill="#fff">0</text></g></svg>`,
   variants: VARIANTS,
   defaultVariant: DEFAULT_VARIANT,
@@ -37,7 +30,7 @@ export const binairo: GameModule<BinairoPuzzle, BinairoState> = {
     board.classList.add('grid-board');
     board.style.setProperty('--n', String(size));
     board.setAttribute('role', 'grid');
-    board.setAttribute('aria-label', 'Binairo board');
+    board.setAttribute('aria-label', t('Binairo board'));
     const cells = givens.map((g, i) => {
       const cell = el('div', g === EMPTY ? 'cell' : 'cell given');
       cell.dataset.i = String(i);
@@ -48,7 +41,7 @@ export const binairo: GameModule<BinairoPuzzle, BinairoState> = {
     });
     ctx.fit(size, size);
 
-    const hint = el('p', 'hint', 'Tap: empty → 0 → 1. Drag to paint.');
+    const hint = el('p', 'hint', t('Tap: empty → 0 → 1. Drag to paint.'));
     ctx.toolbar.append(hint);
 
     const renderCell = (i: number) => {
@@ -60,7 +53,7 @@ export const binairo: GameModule<BinairoPuzzle, BinairoState> = {
       cell.firstElementChild!.textContent = v === EMPTY ? '' : String(v);
       const r = Math.floor(i / size) + 1;
       const c = (i % size) + 1;
-      cell.setAttribute('aria-label', `Row ${r}, column ${c}: ${v === EMPTY ? 'empty' : v}${givens[i] !== EMPTY ? ', given' : ''}`);
+      cell.setAttribute('aria-label', `${t('Row {r}, column {c}', { r, c })}: ${v === EMPTY ? t('empty') : v}${givens[i] !== EMPTY ? t(', given') : ''}`);
     };
 
     const stop = cyclePaint({

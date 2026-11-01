@@ -3,6 +3,7 @@ import type { GameModule } from '../../core/types';
 import { el } from '../../core/util';
 import { sudokuCells } from '../sudoku';
 import { DEFAULT_VARIANT, VARIANTS, cageOf, type KillerPuzzle } from './logic';
+import { t } from '../../core/i18n';
 
 const housePeers = gridPeers(9, 3);
 const INSET = 0.09;
@@ -51,12 +52,6 @@ export const killer: GameModule<KillerPuzzle, PadState> = {
   id: 'killer',
   title: 'Killer Sudoku',
   blurb: 'Sudoku with no clues — just cages whose digits add up to a sum.',
-  rules: [
-    'Every row, column and 3×3 box contains the digits 1–9 exactly once.',
-    'The digits inside each dashed cage add up to the small number in its corner.',
-    'A digit can’t repeat inside a cage.',
-    'Tap a cell, then a number on the pad. Use Notes to pencil in candidates.',
-  ],
   icon: `<svg viewBox="0 0 30 30" fill="none" stroke="currentColor"><rect x="2" y="2" width="26" height="26" rx="2" stroke-width="2"/><path d="M15 2v26M2 15h26" stroke-width="1.2"/><path d="M4.5 4.5h8v21h-8z M17.5 4.5h8v8h-8z" stroke-width="1.3" stroke-dasharray="2 1.6"/><g fill="currentColor" stroke="none" font-family="system-ui,sans-serif" font-weight="700" font-size="6"><text x="5.5" y="10">17</text><text x="18.5" y="10">8</text></g></svg>`,
   variants: VARIANTS,
   defaultVariant: DEFAULT_VARIANT,
@@ -68,7 +63,7 @@ export const killer: GameModule<KillerPuzzle, PadState> = {
 
   mount(ctx) {
     const p = ctx.puzzle;
-    const cells = sudokuCells(ctx.board, 'Killer Sudoku board');
+    const cells = sudokuCells(ctx.board, t('Killer Sudoku board'));
     const cage = cageOf(p);
     p.cages.forEach((k, idx) => {
       const first = cells[k.cells[0]];
@@ -78,7 +73,7 @@ export const killer: GameModule<KillerPuzzle, PadState> = {
     });
     cells.forEach((cell, i) => {
       const k = p.cages[cage[i]];
-      cell.setAttribute('aria-label', `${cell.getAttribute('aria-label')}, cage of ${k.cells.length} summing to ${k.sum}`);
+      cell.setAttribute('aria-label', `${cell.getAttribute('aria-label')}${t(', cage of {n} summing to {sum}', { n: k.cells.length, sum: k.sum })}`);
     });
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     svg.setAttribute('class', 'cage-lines');

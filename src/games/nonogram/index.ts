@@ -2,6 +2,7 @@ import type { GameModule } from '../../core/types';
 import { el } from '../../core/util';
 import { BLANK, CROSS, FILL, Stroke, isSolved, lineSatisfied, mistakes, type Mark, type Tool } from './game';
 import { col, row, type Puzzle } from './logic';
+import { t as tr } from '../../core/i18n';
 
 export interface NonogramState {
   cells: Mark[];
@@ -14,12 +15,6 @@ export const nonogram: GameModule<Puzzle, NonogramState> = {
   id: 'nonogram',
   title: 'Nonogram',
   blurb: 'Paint the hidden picture from the row and column clues.',
-  rules: [
-    'The numbers next to each row and column give the lengths of its runs of filled squares, in order.',
-    'Runs are separated by at least one empty square.',
-    'Pick Fill or Block at the bottom, then tap or drag along a row or column.',
-    'Dragging only changes squares in the same state as the first one.',
-  ],
   icon: `<svg viewBox="0 0 5 5"><path d="M0 1h1v1H0zM1 0h1v3H1zM3 0h1v3H3zM4 1h1v1H4zM2 2h1v3H2zM0 3h1v1H0zM4 3h1v1H4z" fill="currentColor"/></svg>`,
   variants: [{ id: '10', label: '10×10' }],
   defaultVariant: '10',
@@ -46,7 +41,7 @@ export const nonogram: GameModule<Puzzle, NonogramState> = {
 
     board.style.setProperty('--size', String(size));
     board.setAttribute('role', 'grid');
-    board.setAttribute('aria-label', 'Nonogram board');
+    board.setAttribute('aria-label', tr('Nonogram board'));
     board.append(el('div', 'corner'));
     cols.forEach((clue) => {
       const node = clueEl('clue col-clue', clue);
@@ -78,7 +73,7 @@ export const nonogram: GameModule<Puzzle, NonogramState> = {
     ].map(({ t, label, icon }) => {
       const btn = el('button', 'tool');
       btn.type = 'button';
-      btn.append(el('span', `tool-icon ${icon}`), label);
+      btn.append(el('span', `tool-icon ${icon}`), tr(label));
       btn.querySelector('span')!.setAttribute('aria-hidden', 'true');
       btn.addEventListener('click', () => {
         tool = t;
@@ -88,7 +83,7 @@ export const nonogram: GameModule<Puzzle, NonogramState> = {
     });
     const bar = el('div', 'tools');
     bar.setAttribute('role', 'toolbar');
-    bar.setAttribute('aria-label', 'Tool');
+    bar.setAttribute('aria-label', tr('Tool'));
     bar.append(...toolBtns.map((b) => b.btn));
     toolbar.append(bar);
     const renderTools = () => toolBtns.forEach(({ t, btn }) => btn.setAttribute('aria-pressed', String(t === tool)));
@@ -98,7 +93,7 @@ export const nonogram: GameModule<Puzzle, NonogramState> = {
       const mark = ctx.state.cells[i];
       node.classList.remove('filled', 'crossed', 'wrong');
       if (mark !== BLANK) node.classList.add(MARK_CLASS[mark]);
-      node.setAttribute('aria-label', `Row ${Math.floor(i / size) + 1}, column ${(i % size) + 1}: ${MARK_LABEL[mark]}`);
+      node.setAttribute('aria-label', `${tr('Row {r}, column {c}', { r: Math.floor(i / size) + 1, c: (i % size) + 1 })}: ${tr(MARK_LABEL[mark])}`);
     };
 
     const renderClues = () => {

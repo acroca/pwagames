@@ -2,19 +2,12 @@ import { mountPad, newPadState, padMistakes, padProgress, padSolved, padValidSav
 import type { GameModule } from '../../core/types';
 import { el } from '../../core/util';
 import { DEFAULT_VARIANT, VARIANTS, combinations, runs, type KakuroPuzzle, type Run } from './logic';
+import { t } from '../../core/i18n';
 
 export const kakuro: GameModule<KakuroPuzzle, PadState> = {
   id: 'kakuro',
   title: 'Kakuro',
   blurb: 'A crossword of sums: each run of white cells adds up to its clue.',
-  rules: [
-    'Fill every white cell with a digit from 1 to 9.',
-    'Each horizontal run adds up to the clue on its left (the number above the diagonal).',
-    'Each vertical run adds up to the clue above it (the number below the diagonal).',
-    'Digits can’t repeat within a run.',
-    'Tap a cell, then a number on the pad. Use Notes to pencil in candidates.',
-    'Turn on “Show combinations” to list the digit sets that fit the selected runs.',
-  ],
   icon: `<svg viewBox="0 0 30 30"><rect x="2" y="2" width="26" height="26" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M2 2h13v13H2z" fill="currentColor"/><path d="M3 3l11 11" stroke="#fff" stroke-width="1"/><path d="M15 2v26M2 15h26" stroke="currentColor" stroke-width="1.2"/><g font-family="system-ui,sans-serif" font-weight="700" text-anchor="middle"><text x="11" y="7.8" font-size="5" fill="#fff">9</text><text x="6" y="13" font-size="5" fill="#fff">4</text><text x="21.5" y="11.5" font-size="8" fill="currentColor">8</text><text x="8.5" y="24.5" font-size="8" fill="currentColor">3</text></g></svg>`,
   variants: VARIANTS,
   defaultVariant: DEFAULT_VARIANT,
@@ -32,7 +25,7 @@ export const kakuro: GameModule<KakuroPuzzle, PadState> = {
     board.classList.add('grid-board', 'num-board');
     board.style.setProperty('--n', String(n));
     board.setAttribute('role', 'grid');
-    board.setAttribute('aria-label', 'Kakuro board');
+    board.setAttribute('aria-label', t('Kakuro board'));
 
     const allRuns = runs(p);
     const runsOf: Run[][] = p.blocks.map(() => []);
@@ -51,13 +44,13 @@ export const kakuro: GameModule<KakuroPuzzle, PadState> = {
           cell.classList.add('clue');
           if (across) cell.append(el('span', 'clue-across', String(across)));
           if (down) cell.append(el('span', 'clue-down', String(down)));
-          const parts = [across && `across sum ${across}`, down && `down sum ${down}`].filter(Boolean);
-          cell.setAttribute('aria-label', `Row ${r}, column ${c}: clue, ${parts.join(', ')}`);
+          const parts = [across && t('across sum {n}', { n: across }), down && t('down sum {n}', { n: down })].filter(Boolean);
+          cell.setAttribute('aria-label', `${t('Row {r}, column {c}', { r, c })}${t(': clue, {parts}', { parts: parts.join(', ') })}`);
         } else {
-          cell.setAttribute('aria-label', `Row ${r}, column ${c}: blank`);
+          cell.setAttribute('aria-label', `${t('Row {r}, column {c}', { r, c })}${t(': blank')}`);
         }
       } else {
-        cell.setAttribute('aria-label', `Row ${r}, column ${c}`);
+        cell.setAttribute('aria-label', t('Row {r}, column {c}', { r, c }));
       }
       board.append(cell);
       return block ? null : cell;

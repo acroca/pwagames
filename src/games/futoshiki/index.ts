@@ -2,6 +2,7 @@ import { gridPeers, mountPad, newPadState, padMistakes, padProgress, padSolved, 
 import type { GameModule } from '../../core/types';
 import { el } from '../../core/util';
 import { DEFAULT_VARIANT, VARIANTS, type FutoshikiPuzzle } from './logic';
+import { t } from '../../core/i18n';
 
 /** Width of the sign gutters between cells, in cell units. */
 const GAP = 0.42;
@@ -10,12 +11,6 @@ export const futoshiki: GameModule<FutoshikiPuzzle, PadState> = {
   id: 'futoshiki',
   title: 'Futoshiki',
   blurb: 'A Latin square with greater-than and less-than signs between cells.',
-  rules: [
-    'Fill the grid with 1–N so each row and column holds every digit exactly once.',
-    'Every sign between two cells must hold: the open side faces the larger digit.',
-    'Tap a cell, then a number on the pad. Use Notes to pencil in candidates.',
-    'A sign turns red if the digits on both sides break it.',
-  ],
   icon: `<svg viewBox="0 0 30 30" fill="none" stroke="currentColor"><rect x="2" y="2" width="10" height="10" rx="2" stroke-width="1.6"/><rect x="18" y="2" width="10" height="10" rx="2" stroke-width="1.6"/><rect x="2" y="18" width="10" height="10" rx="2" stroke-width="1.6"/><rect x="18" y="18" width="10" height="10" rx="2" stroke-width="1.6"/><path d="M16.8 5l-3.6 2 3.6 2M5 13.4l2 3.2 2-3.2" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><g fill="currentColor" stroke="none" font-family="system-ui,sans-serif" font-weight="700" font-size="7" text-anchor="middle"><text x="7" y="9.5">1</text><text x="23" y="25.5">3</text></g></svg>`,
   variants: VARIANTS,
   defaultVariant: DEFAULT_VARIANT,
@@ -35,7 +30,7 @@ export const futoshiki: GameModule<FutoshikiPuzzle, PadState> = {
     board.style.gridTemplateColumns = tracks;
     board.style.gridTemplateRows = tracks;
     board.setAttribute('role', 'grid');
-    board.setAttribute('aria-label', 'Futoshiki board');
+    board.setAttribute('aria-label', t('Futoshiki board'));
     const cells = Array.from({ length: n * n }, (_, i) => {
       const r = Math.floor(i / n);
       const c = i % n;
@@ -69,9 +64,9 @@ export const futoshiki: GameModule<FutoshikiPuzzle, PadState> = {
         .map(({ a, b }) => {
           const other = a === i ? b : a;
           const dir = other === i - 1 ? 'left' : other === i + 1 ? 'right' : other < i ? 'above' : 'below';
-          return `${a === i ? 'smaller' : 'larger'} than the cell ${dir}`;
+          return t(a === i ? 'smaller than the cell {dir}' : 'larger than the cell {dir}', { dir: t(dir) });
         });
-      cell.setAttribute('aria-label', [`Row ${r + 1}, column ${c + 1}`, ...facts].join(', '));
+      cell.setAttribute('aria-label', [t('Row {r}, column {c}', { r: r + 1, c: c + 1 }), ...facts].join(', '));
     });
     ctx.fit(n + (n - 1) * GAP, n + (n - 1) * GAP);
 

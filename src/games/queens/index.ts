@@ -2,6 +2,7 @@ import { trackStrokes } from '../../core/pointer';
 import type { GameModule } from '../../core/types';
 import { el } from '../../core/util';
 import { DEFAULT_VARIANT, VARIANTS, ruledOut, type QueensPuzzle } from './logic';
+import { t } from '../../core/i18n';
 
 const EMPTY = 0;
 const MARK = 1;
@@ -35,12 +36,6 @@ export const queens: GameModule<QueensPuzzle, QueensState> = {
   id: 'queens',
   title: 'Queens',
   blurb: 'One queen in every row, column and colored region — and no two may touch.',
-  rules: [
-    'Place exactly one queen in each row, each column and each colored region.',
-    'Queens may not touch each other, not even diagonally.',
-    'Tap once for ✕ (no queen here), tap again for a queen, and once more to clear.',
-    'Drag to put ✕ on several cells; a drag that starts on a ✕ erases them instead.',
-  ],
   icon: `<svg viewBox="0 0 30 30"><rect x="2" y="2" width="13" height="13" rx="2" fill="#f4a6a6"/><rect x="15" y="2" width="13" height="13" rx="2" fill="#9fd8e6"/><rect x="2" y="15" width="13" height="13" rx="2" fill="#b8e0a8"/><rect x="15" y="15" width="13" height="13" rx="2" fill="#f9d38c"/><path fill="#1e293b" d="M17 7l2.5 2.2L21.5 4.5l2 4.7L26 7l-1.2 6.5h-6.6z"/><path stroke="#1e293b" stroke-width="1.8" stroke-linecap="round" d="M5.5 18.5l6 6m0-6l-6 6"/></svg>`,
   variants: VARIANTS,
   defaultVariant: DEFAULT_VARIANT,
@@ -65,7 +60,7 @@ export const queens: GameModule<QueensPuzzle, QueensState> = {
     board.classList.add('grid-board');
     board.style.setProperty('--n', String(n));
     board.setAttribute('role', 'grid');
-    board.setAttribute('aria-label', 'Queens board');
+    board.setAttribute('aria-label', t('Queens board'));
     const cells = p.regions.map((g, i) => {
       const r = Math.floor(i / n);
       const c = i % n;
@@ -78,7 +73,7 @@ export const queens: GameModule<QueensPuzzle, QueensState> = {
       return cell;
     });
     ctx.fit(n, n);
-    ctx.toolbar.append(el('p', 'hint', 'Tap: ✕ → queen → empty. Drag to mark ✕.'));
+    ctx.toolbar.append(el('p', 'hint', t('Tap: ✕ → queen → empty. Drag to mark ✕.')));
 
     /** Cells shown with ✕: manual marks plus, if enabled, cells ruled out by queens. */
     const shownMarks = () => {
@@ -106,7 +101,7 @@ export const queens: GameModule<QueensPuzzle, QueensState> = {
         cell.classList.remove('wrong');
         const r = Math.floor(i / n) + 1;
         const c = (i % n) + 1;
-        cell.setAttribute('aria-label', `Row ${r}, column ${c}, region ${p.regions[i] + 1}: ${shown || 'empty'}`);
+        cell.setAttribute('aria-label', t('Row {r}, column {c}, region {g}: {v}', { r, c, g: p.regions[i] + 1, v: t(shown || 'empty') }));
       });
     };
 

@@ -2,6 +2,7 @@ import { cellAt } from '../../core/pointer';
 import type { GameModule } from '../../core/types';
 import { el } from '../../core/util';
 import { DEFAULT_VARIANT, VARIANTS, counts, floodOpen, neighbors, type MinesweeperPuzzle } from './logic';
+import { t as tr } from '../../core/i18n';
 
 /** Hold this long (ms) to use the other tool. */
 const LONG_PRESS = 400;
@@ -38,13 +39,6 @@ export const minesweeper: GameModule<MinesweeperPuzzle, MinesweeperState> = {
   id: 'minesweeper',
   title: 'Minesweeper',
   blurb: 'Clear the field without guessing — every board can be solved by logic.',
-  rules: [
-    'Open every cell that has no mine. A number tells how many of its 8 neighbours hide a mine.',
-    'Your first tap is always safe and opens an area. From there, every board can be solved by logic alone.',
-    'Tap to open a cell; long-press (or pick the Flag tool) to flag a mine.',
-    'Tap a number whose mines are all flagged to open the rest of its neighbours.',
-    'Opening a mine ends the game — you can retry the same board.',
-  ],
   icon: `<svg viewBox="0 0 30 30"><rect x="2" y="2" width="26" height="26" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="15" cy="16" r="6" fill="currentColor"/><path d="M15 6v4M15 22v4M5 16h4M21 16h4M8 9l3 3M19 20l3 3M22 9l-3 3M11 20l-3 3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="13" cy="14" r="1.6" fill="#fff"/></svg>`,
   variants: VARIANTS,
   defaultVariant: DEFAULT_VARIANT,
@@ -72,7 +66,7 @@ export const minesweeper: GameModule<MinesweeperPuzzle, MinesweeperState> = {
     board.classList.add('grid-board');
     board.style.setProperty('--n', String(w));
     board.setAttribute('role', 'grid');
-    board.setAttribute('aria-label', 'Minefield');
+    board.setAttribute('aria-label', tr('Minefield'));
     const cells = Array.from({ length: w * h }, (_, i) => {
       const cell = el('div', 'cell');
       cell.dataset.i = String(i);
@@ -85,7 +79,7 @@ export const minesweeper: GameModule<MinesweeperPuzzle, MinesweeperState> = {
     let tool: Tool = 'open';
     const info = el('p', 'hint');
     const toolBtns = (['open', 'flag'] as Tool[]).map((t) => {
-      const btn = el('button', 'tool', t === 'open' ? 'Open' : 'Flag');
+      const btn = el('button', 'tool', tr(t === 'open' ? 'Open' : 'Flag'));
       btn.type = 'button';
       btn.prepend(el('span', `tool-icon ${t}-icon`));
       btn.querySelector('span')!.setAttribute('aria-hidden', 'true');
@@ -97,7 +91,7 @@ export const minesweeper: GameModule<MinesweeperPuzzle, MinesweeperState> = {
     });
     const bar = el('div', 'tools');
     bar.setAttribute('role', 'toolbar');
-    bar.setAttribute('aria-label', 'Tool');
+    bar.setAttribute('aria-label', tr('Tool'));
     bar.append(...toolBtns.map((b) => b.btn));
     ctx.toolbar.append(info, bar);
     const renderTools = () => toolBtns.forEach(({ t, btn }) => btn.setAttribute('aria-pressed', String(t === tool)));
@@ -126,12 +120,12 @@ export const minesweeper: GameModule<MinesweeperPuzzle, MinesweeperState> = {
         }
         if (cell.className !== cls) cell.className = cls;
         if (cell.textContent !== text) cell.textContent = text;
-        cell.setAttribute('aria-label', `Row ${Math.floor(i / w) + 1}, column ${(i % w) + 1}: ${label}`);
+        cell.setAttribute('aria-label', `${tr('Row {r}, column {c}', { r: Math.floor(i / w) + 1, c: (i % w) + 1 })}: ${tr(label)}`);
       });
       const flags = s.flags.filter(Boolean).length;
       info.textContent = started
-        ? `💣 ${mineTotal(p) - flags} left · long-press for the other tool`
-        : 'Tap any cell to start — the first tap is always safe.';
+        ? tr('💣 {n} left · long-press for the other tool', { n: mineTotal(p) - flags })
+        : tr('Tap any cell to start — the first tap is always safe.');
       renderTools();
     };
 
