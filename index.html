@@ -17,7 +17,7 @@
     <section id="menu-screen" class="screen" hidden>
       <header class="topbar">
         <h1 data-i18n="Logic Puzzles">Logic Puzzles</h1>
-        <button id="rules-btn" type="button" data-i18n="Rules">Rules</button>
+        <button id="rules-btn" type="button" class="icon-circle" data-i18n-label="Rules" aria-label="Rules">?</button>
         <div id="lang-select" class="lang-select" role="group" data-i18n-label="Language" aria-label="Language"></div>
       </header>
       <main class="menu">
@@ -33,6 +33,7 @@
           <h1 id="game-title"></h1>
           <span class="meta"><span id="game-meta"></span> <span id="timer" class="timer" role="timer"></span></span>
         </div>
+        <button id="game-rules" type="button" class="icon-circle" data-i18n-label="Rules" aria-label="Rules">?</button>
         <nav class="actions">
           <button id="undo" type="button" data-i18n="Undo">Undo</button>
           <button id="check" type="button" data-i18n="Check">Check</button>

@@ -120,6 +120,7 @@ button:disabled {
 
 .topbar {
   min-height: calc(var(--safe-top) + 3.75rem);
+  row-gap: 0.4rem;
 }
 
 .topbar h1 {
@@ -179,14 +180,34 @@ button.primary {
   content: '· ';
 }
 
+.topbar {
+  flex-wrap: wrap;
+}
+
+.icon-circle {
+  flex: none;
+  min-width: 36px;
+  width: 36px;
+  min-height: 36px;
+  height: 36px;
+  padding: 0;
+  border-radius: 50%;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
 .actions {
   display: flex;
-  gap: 0.35rem;
+  flex: 1 0 100%;
+  gap: 0.4rem;
 }
 
 .actions button {
-  padding: 0 0.6rem;
+  flex: 1;
+  min-width: 0;
+  padding: 0 0.5rem;
   font-size: 0.95rem;
+  white-space: nowrap;
 }
 
 /* Menu */
