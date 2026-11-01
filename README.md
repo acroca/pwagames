@@ -1,24 +1,99 @@
-# Nonograms
+# Logic Puzzles (pwagames)
 
-A Progressive Web App for playing 10×10 [nonogram](https://en.wikipedia.org/wiki/Nonogram) puzzles,
-designed for iPhone. Open **https://acroca.github.io/nonograms/** in Safari and use
-**Share → Add to Home Screen** to install it; it then runs full-screen and works offline.
+A Progressive Web App with a collection of logic puzzle games, designed for iPhone.
+Open **https://acroca.github.io/pwagames/** in Safari and use **Share → Add to Home Screen**
+to install it; it then runs full-screen and works offline.
 
-## Playing
+Every puzzle is generated on the fly, has exactly one solution, and can be solved by logic
+alone — no guessing needed.
 
-- Pick a tool at the bottom: **Fill** fills squares, **Block** marks squares as blocked (✕).
-- Tap a square to toggle it, or drag a finger to paint along a row or column. Dragging only
-  changes squares in the same state as the first one, so existing marks aren't overwritten.
-- The clues of the row and column under your finger are highlighted while drawing.
-- Clues turn grey once their row/column matches. Progress is saved automatically.
+## Games
+
+| Game | Sizes / levels |
+| --- | --- |
+| Nonogram | 10×10 |
+| Binairo (Takuzu) | 6×6, 8×8, 10×10 |
+| Queens (Star Battle) | 7×7 – 10×10 |
+| Sudoku | Easy, medium, hard |
+| Killer Sudoku | Easy, medium, hard |
+| KenKen | 4×4, 5×5, 6×6 |
+| Futoshiki | 5×5, 6×6 |
+| Kakuro | 6×6, 8×8 (including clue cells) |
+| Hitori | 6×6, 7×7, 8×8 |
+| Nurikabe | 7×7 – 10×10 |
+| Slitherlink | 5×5, 6×6, 7×7 |
+| Minesweeper (no guessing) | 9×9, 9×16 |
+
+## Shared features
+
+Every game has the same app bar and behaviour:
+
+- **Menu cards** list the games, with the in-progress puzzle or your best time.
+- **Undo** steps back through your moves; **Check** flags entries that contradict the
+  solution. (Minesweeper has neither: opening a mine ends the game, with an option to retry
+  the same board.)
+- A **timer** runs while the game is on screen and stops when it's solved; best times are kept
+  per game and size.
+- Progress is **saved automatically** (per game), so you can switch games and come back.
+- **New** opens a sheet to pick a size or difficulty, start a new puzzle, restart the current
+  one, change game settings, and read the rules.
 
 ## Puzzle generation
 
-Every puzzle has a unique solution reachable by logic alone — no guessing needed.
-The generator (`src/nonogram.ts`) draws random 10×10 pictures and keeps only those that a
-line solver fully solves. The line solver only makes deductions that hold for every valid
-placement of a row's or column's blocks, so a complete solve proves the solution is unique.
-Tests additionally confirm uniqueness with a brute-force solver.
+Generators live next to each game in `src/games/<game>/logic.ts` and are pure functions of a
+size/difficulty and a seed. They run in a Web Worker (`src/core/worker.ts`) with a loading
+indicator, so the UI never freezes.
+
+Each generator pairs a *logic solver* (constraint propagation using human techniques only)
+with a *counting solver* (propagation + backtracking that stops after finding two solutions).
+A puzzle is only accepted if the logic solver solves it completely, which proves its solution
+is unique and reachable without guessing. Tests check every generated puzzle with the counting
+solver and an independent rule checker.
+
+- **Nonogram**: random pictures are kept only if a line solver fully solves them.
+- **Binairo**: givens are removed from a random valid grid while a line solver (no triples,
+  balance, unique lines) can still solve it, down to about 30% of the cells.
+- **Queens**: regions are grown around a random queen placement, then reshaped by hill-climbing
+  until a solver using singles, region/line confinement and one-step lookahead solves it;
+  puzzles that need only singles are rejected as too easy.
+- **Sudoku**: clues are removed from a random grid while the solution stays unique and a human-
+  style solver still finishes it at the chosen level: singles (easy); locked candidates and
+  pairs (medium, singles alone must fail); triples, X-Wing, Swordfish and XY-Wing (hard,
+  medium techniques must fail).
+- **Killer Sudoku**: cages are grown over a random grid, then split (or, on easy, given a
+  digit) wherever the solver gets stuck. Levels add cage combinations, the rule of 45 over
+  houses and groups of houses, and innie/outie differences; medium and hard have no givens.
+- **KenKen**: random cages over a random Latin square, with operations re-picked (then cages
+  redrawn) until a solver using cage enumeration, cage-confined digits and naked/hidden
+  subsets solves it; puzzles that fall to cage arithmetic plus singles are rejected.
+- **Futoshiki**: signs and a few givens are drawn from a random Latin square and thinned while
+  a solver using inequality chains, singles and subsets still solves it.
+- **Kakuro**: a symmetric layout of runs is filled with random digits; runs the solver can't
+  crack are refilled with low/high digits (fewer combinations) until per-run combination
+  logic solves the whole grid.
+- **Hitori**: a random connected, non-touching shading is laid over a random Latin square and
+  each shaded cell copies a number from its row or column; layouts are re-rolled until a solver
+  using sandwich/pair patterns, shade/unshade propagation and connectivity (cut cells) solves it.
+- **Nurikabe**: islands are grown on an all-sea grid (no 2×2 pools, connected sea), then a
+  local search flips cells or moves numbers near whatever the solver can't decide, until a solver
+  using reachability, sea/island bottlenecks, pool rules and per-island completions solves it.
+- **Slitherlink**: the loop is the outline of a random hole-free region; clues are removed in
+  random order while a solver using cell counts, dot degrees, no premature loops, inside/outside
+  colouring and 2×2 block enumeration still solves it.
+- **Minesweeper**: mines are placed after your first tap, outside its 3×3 area; while a
+  simulated player using single/pair rules, frontier enumeration and the mine count gets stuck,
+  a mine is moved off the stuck frontier (or the layout is redrawn).
+
+## Project layout
+
+```
+src/main.ts              menu + routing
+src/core/                shell (app bar, timer, undo, check, autosave), worker, input helpers,
+                         number pad shared by the number games
+src/games/registry.ts    games in menu order
+src/games/generators.ts  generator table used by the worker
+src/games/<game>/        logic.ts (generator + solvers), index.ts (UI), tests
+```
 
 ## Development
 
