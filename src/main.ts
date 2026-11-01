@@ -5,6 +5,7 @@ import { LANGS, applyStatic, lang, onLangChange, setLang, t } from './core/i18n'
 import { load, loadRaw, save } from './core/storage';
 import { el, formatTime } from './core/util';
 import { GAMES } from './games/registry';
+import { initInstall, initShare } from './core/install';
 import './style.css';
 
 registerSW({ immediate: true });
@@ -108,6 +109,8 @@ onLangChange(() => {
   }
 });
 
+initInstall();
+initShare();
 applyStatic();
 renderLangSelect();
 migrateLegacyNonogram();

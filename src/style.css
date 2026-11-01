@@ -1410,3 +1410,35 @@ button.primary {
 #menu-screen .topbar h1 {
   flex: 1;
 }
+
+/* Install + about footer */
+.install-btn {
+  margin-top: 1rem;
+  background: var(--accent);
+  color: var(--accent-fg);
+  border-color: var(--accent);
+}
+
+.about {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-bottom: var(--safe-bottom);
+}
+
+.about h2 {
+  margin: 0;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.about .menu-note {
+  margin: 0;
+}
+
+.about a {
+  color: var(--accent);
+}

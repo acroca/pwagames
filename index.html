@@ -23,6 +23,16 @@
       <main class="menu">
         <div id="game-list" class="cards"></div>
         <p class="menu-note" data-i18n="Endless puzzles, each with one solution you can reach by logic alone.">Endless puzzles, each with one solution you can reach by logic alone.</p>
+        <button id="install-btn" type="button" class="wide install-btn" data-i18n="Install app" hidden>Install app</button>
+        <footer class="about">
+          <h2 data-i18n="Share with friends">Share with friends</h2>
+          <button id="share-btn" type="button" class="wide" data-i18n="Share this game">Share this game</button>
+          <p class="menu-note">
+            <span data-i18n="Free and open source.">Free and open source.</span>
+            <a href="https://github.com/acroca/pwagames" target="_blank" rel="noopener" data-i18n="View the code on GitHub">View the code on GitHub</a>
+          </p>
+          <p class="menu-note" data-i18n="Contributions, bug reports and ideas are welcome.">Contributions, bug reports and ideas are welcome.</p>
+        </footer>
       </main>
     </section>
 
@@ -50,6 +60,7 @@
     </section>
 
     <dialog id="sheet" class="sheet"></dialog>
+    <dialog id="install-sheet" class="sheet"></dialog>
     <dialog id="guide" class="sheet"></dialog>
     <script type="module" src="/src/main.ts"></script>
   </body>

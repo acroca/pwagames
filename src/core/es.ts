@@ -6,6 +6,21 @@ export const ES: Record<string, string> = {
     'Puzzles infinitos, cada uno con una única solución que se alcanza solo con lógica.',
   'Logic puzzle games. Every puzzle has a unique solution you can reach without guessing.':
     'Juegos de puzzles de lógica. Cada puzzle tiene una solución única que se alcanza sin adivinar.',
+  'Install app': 'Instalar app',
+  'Share with friends': 'Comparte con amigos',
+  'Share this game': 'Compartir este juego',
+  'Free and open source.': 'Gratis y de código abierto.',
+  'View the code on GitHub': 'Ver el código en GitHub',
+  'Contributions, bug reports and ideas are welcome.': 'Se agradecen contribuciones, reportes de errores e ideas.',
+  'Install Logic Puzzles': 'Instalar Puzzles de lógica',
+  'Link copied!': '¡Enlace copiado!',
+  'Play free logic puzzles with me!': '¡Juega conmigo a puzzles de lógica gratis!',
+  'In Safari, tap the Share button, then choose “Add to Home Screen”.':
+    'En Safari, toca el botón Compartir y elige «Añadir a pantalla de inicio».',
+  'In your browser menu (⋮), choose “Install app” or “Add to Home screen”.':
+    'En el menú del navegador (⋮), elige «Instalar app» o «Añadir a pantalla de inicio».',
+  'In your browser, look for the install icon in the address bar, or open the menu and choose “Install”.':
+    'En tu navegador, busca el icono de instalar en la barra de direcciones, o abre el menú y elige «Instalar».',
   'Language': 'Idioma',
   'Rules': 'Reglas',
   'All games': 'Todos los juegos',
