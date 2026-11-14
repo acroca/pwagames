@@ -23,7 +23,5 @@ npm run build    # type-check + production build
   for rules).
 - A new game lives in `src/games/<game>/` and is registered in `src/games/registry.ts` and
   `src/games/generators.ts`. See the project layout in the [README](README.md).
-- The share picture `public/og.png` shows every game's icon. `npm run og` redraws it (it needs
-  Playwright, see `scripts/generate-og.mjs`); a maintainer can do this after a new game lands.
 
 By contributing you agree that your contributions are licensed under the [MIT License](LICENSE).
