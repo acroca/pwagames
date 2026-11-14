@@ -55,7 +55,8 @@ try {
     const h1 = document.createElement('h1');
     h1.textContent = 'Logic Puzzles';
     const p = document.createElement('p');
-    p.innerHTML = `<b>${icons.length} games</b> · no guessing, ever · free and offline`;
+    // No game count: services cache this picture for a long time, and it would go stale.
+    p.innerHTML = '<b>No guessing, ever</b> · free and offline';
     head.append(h1, p);
     const tiles = document.createElement('div');
     tiles.className = 'tiles';
