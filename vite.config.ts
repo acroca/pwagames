@@ -27,6 +27,8 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,webmanifest}'],
+        // Only link previews fetch the share picture; the app never shows it.
+        globIgnores: ['og.png'],
       },
     }),
   ],
