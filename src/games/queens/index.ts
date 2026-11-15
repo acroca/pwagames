@@ -1,4 +1,5 @@
 import { trackStrokes } from '../../core/pointer';
+import { regionWalls } from '../../core/regions';
 import type { GameModule } from '../../core/types';
 import { el } from '../../core/util';
 import { DEFAULT_VARIANT, VARIANTS, ruledOut, type QueensPuzzle } from './logic';
@@ -62,16 +63,13 @@ export const queens: GameModule<QueensPuzzle, QueensState> = {
     board.setAttribute('role', 'grid');
     board.setAttribute('aria-label', t('Queens board'));
     const cells = p.regions.map((g, i) => {
-      const r = Math.floor(i / n);
-      const c = i % n;
       const cell = el('div', `cell rg-${g}`);
-      if (c < n - 1 && p.regions[i + 1] !== g) cell.classList.add('wall-r');
-      if (r < n - 1 && p.regions[i + n] !== g) cell.classList.add('wall-b');
       cell.dataset.i = String(i);
       cell.setAttribute('role', 'gridcell');
       board.append(cell);
       return cell;
     });
+    board.append(regionWalls(n, p.regions));
     ctx.fit(n, n);
     ctx.toolbar.append(el('p', 'hint', t('Tap: ✕ → queen → empty. Drag to mark ✕.')));
 

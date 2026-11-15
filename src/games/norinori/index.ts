@@ -1,6 +1,6 @@
 import { t } from '../../core/i18n';
 import { cyclePaint } from '../../core/pointer';
-import { REGION_HUES, tintRegions } from '../../core/regions';
+import { REGION_HUES, regionWalls, tintRegions } from '../../core/regions';
 import type { GameModule } from '../../core/types';
 import { el } from '../../core/util';
 import { DEFAULT_VARIANT, VARIANTS, type NorinoriPuzzle } from './logic';
@@ -37,16 +37,15 @@ export const norinori: GameModule<NorinoriPuzzle, NorinoriState> = {
     board.setAttribute('role', 'grid');
     board.setAttribute('aria-label', t('Norinori board'));
     const tint = tintRegions(n, regions);
-    const cells = regions.map((g, i) => {
+    const cells = regions.map((_, i) => {
       const cell = el('div', 'cell');
       cell.dataset.i = String(i);
       cell.setAttribute('role', 'gridcell');
       cell.style.setProperty('--tint', `color-mix(in srgb, hsl(${REGION_HUES[tint[i]]} 75% 55%) 20%, var(--surface))`);
-      if (i % n < n - 1 && regions[i + 1] !== g) cell.classList.add('wall-r');
-      if (i + n < n * n && regions[i + n] !== g) cell.classList.add('wall-b');
       board.append(cell);
       return cell;
     });
+    board.append(regionWalls(n, regions));
     ctx.fit(n, n);
     ctx.toolbar.append(el('p', 'hint', t('Tap: shade → dot → clear. Drag to paint.')));
 

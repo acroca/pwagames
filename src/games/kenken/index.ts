@@ -1,4 +1,5 @@
 import { gridPeers, mountPad, newPadState, padMistakes, padProgress, padSolved, padValidSave, type PadState } from '../../core/numpad';
+import { regionWalls } from '../../core/regions';
 import type { GameModule } from '../../core/types';
 import { el } from '../../core/util';
 import { DEFAULT_VARIANT, VARIANTS, cageOf, opSymbol, type KenKenPuzzle } from './logic';
@@ -40,8 +41,6 @@ export const kenken: GameModule<KenKenPuzzle, PadState> = {
       const r = Math.floor(i / n);
       const c = i % n;
       const cell = el('div', 'cell');
-      if (c < n - 1 && cage[i + 1] !== cage[i]) cell.classList.add('wall-r');
-      if (r < n - 1 && cage[i + n] !== cage[i]) cell.classList.add('wall-b');
       const k = p.cages[cage[i]];
       cell.dataset.i = String(i);
       cell.setAttribute('role', 'gridcell');
@@ -54,6 +53,7 @@ export const kenken: GameModule<KenKenPuzzle, PadState> = {
       cells[k.cells[0]].classList.add('has-sum');
       cells[k.cells[0]].append(el('span', 'cage-sum', `${k.target}${opSymbol(k.op)}`));
     }
+    board.append(regionWalls(n, cage));
     ctx.fit(n, n);
 
     return mountPad({
