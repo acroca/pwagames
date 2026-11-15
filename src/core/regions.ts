@@ -25,3 +25,27 @@ export function tintRegions(n: number, regions: number[]): number[] {
   }
   return regions.map((g) => colour[g] % REGION_HUES.length);
 }
+
+/**
+ * Overlay drawing the walls between the regions of a square grid as one stroked path, so corners and junctions
+ * join cleanly (per-cell borders leave notches where a wall turns). Append it to a `.grid-board` after the cells.
+ */
+export function regionWalls(n: number, regions: ArrayLike<number>): SVGSVGElement {
+  const NS = 'http://www.w3.org/2000/svg';
+  let d = '';
+  for (let i = 0; i < n * n; i++) {
+    const r = Math.floor(i / n);
+    const c = i % n;
+    if (c < n - 1 && regions[i + 1] !== regions[i]) d += `M${c + 1} ${r}v1`;
+    if (r < n - 1 && regions[i + n] !== regions[i]) d += `M${c} ${r + 1}h1`;
+  }
+  const svg = document.createElementNS(NS, 'svg');
+  svg.setAttribute('class', 'walls');
+  svg.setAttribute('viewBox', `0 0 ${n} ${n}`);
+  svg.setAttribute('preserveAspectRatio', 'none');
+  svg.setAttribute('aria-hidden', 'true');
+  const path = document.createElementNS(NS, 'path');
+  path.setAttribute('d', d);
+  svg.append(path);
+  return svg;
+}

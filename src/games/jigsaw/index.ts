@@ -1,6 +1,6 @@
 import { t } from '../../core/i18n';
 import { mountPad, newPadState, padMistakes, padProgress, padSolved, padValidSave, type PadState } from '../../core/numpad';
-import { REGION_HUES, tintRegions } from '../../core/regions';
+import { REGION_HUES, regionWalls, tintRegions } from '../../core/regions';
 import type { GameModule } from '../../core/types';
 import { el } from '../../core/util';
 import { DEFAULT_VARIANT, peersOf, VARIANTS, type JigsawPuzzle } from './logic';
@@ -32,12 +32,11 @@ export const jigsaw: GameModule<JigsawPuzzle, PadState> = {
       cell.dataset.i = String(i);
       cell.setAttribute('role', 'gridcell');
       cell.style.setProperty('--tint', `color-mix(in srgb, hsl(${REGION_HUES[tint[i]]} 75% 55%) 16%, var(--surface))`);
-      if (i % n < n - 1 && p.regions[i + 1] !== g) cell.classList.add('wall-r');
-      if (i + n < n * n && p.regions[i + n] !== g) cell.classList.add('wall-b');
       cell.setAttribute('aria-label', `${t('Row {r}, column {c}', { r: Math.floor(i / n) + 1, c: (i % n) + 1 })}, ${t('region {n}', { n: g + 1 })}`);
       board.append(cell);
       return cell;
     });
+    board.append(regionWalls(n, p.regions));
     ctx.fit(n, n);
     return mountPad({
       ctx,
