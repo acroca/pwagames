@@ -2380,3 +2380,173 @@ button.primary {
   border-color: var(--accent);
   box-shadow: inset 0 0 0 2px var(--accent);
 }
+
+/* Alibi */
+.board-alibi,
+.alibi-clues {
+  --r0: #fecaca;
+  --r1: #bae6fd;
+  --r2: #fef08a;
+  --r3: #bbf7d0;
+  --r4: #fed7aa;
+  --r5: #c7d2fe;
+  --r6: #f5d0fe;
+  --r7: #e7d3c0;
+  --r8: #e2e8f0;
+  --r9: #99f6e4;
+  --t0: #0f172a;
+  --t1: #dc2626;
+  --t2: #2563eb;
+  --t3: #15803d;
+  --t4: #9333ea;
+  --t5: #c2410c;
+  --t6: #0e7490;
+  --t7: #be185d;
+  --t8: #713f12;
+}
+.board-alibi {
+  border-width: 3px;
+  border-right-width: 2px;
+  border-bottom-width: 2px;
+  color: #0f172a;
+}
+.board-alibi .walls {
+  --wall: 3px;
+  transform: translate(-0.5px, -0.5px);
+}
+.board-alibi .cell {
+  border-color: rgba(15, 23, 42, 0.2);
+}
+:is(.board-alibi, .alibi-clues) .rg-0 { background-color: var(--r0); }
+:is(.board-alibi, .alibi-clues) .rg-1 { background-color: var(--r1); }
+:is(.board-alibi, .alibi-clues) .rg-2 { background-color: var(--r2); }
+:is(.board-alibi, .alibi-clues) .rg-3 { background-color: var(--r3); }
+:is(.board-alibi, .alibi-clues) .rg-4 { background-color: var(--r4); }
+:is(.board-alibi, .alibi-clues) .rg-5 { background-color: var(--r5); }
+:is(.board-alibi, .alibi-clues) .rg-6 { background-color: var(--r6); }
+:is(.board-alibi, .alibi-clues) .rg-7 { background-color: var(--r7); }
+:is(.board-alibi, .alibi-clues) .rg-8 { background-color: var(--r8); }
+:is(.board-alibi, .alibi-clues) .rg-9 { background-color: var(--r9); }
+
+.board-alibi .cell.named {
+  box-shadow: inset 0 0 0 100px rgba(255, 255, 255, 0.45);
+}
+.board-alibi .cell.object {
+  background-image: linear-gradient(rgba(15, 23, 42, 0.14), rgba(15, 23, 42, 0.14));
+}
+.alibi-object {
+  font-size: calc(var(--cell) * 0.56);
+  line-height: 1;
+}
+.alibi-token {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 1.7em;
+  height: 1.7em;
+  border-radius: 50%;
+  color: #fff;
+  font-weight: 700;
+  line-height: 1;
+}
+.alibi-token.tok-0 { background: var(--t0); }
+.alibi-token.tok-1 { background: var(--t1); }
+.alibi-token.tok-2 { background: var(--t2); }
+.alibi-token.tok-3 { background: var(--t3); }
+.alibi-token.tok-4 { background: var(--t4); }
+.alibi-token.tok-5 { background: var(--t5); }
+.alibi-token.tok-6 { background: var(--t6); }
+.alibi-token.tok-7 { background: var(--t7); }
+.alibi-token.tok-8 { background: var(--t8); }
+.board-alibi .alibi-token {
+  font-size: calc(var(--cell) * 0.42);
+  animation: pop 0.2s ease-out;
+}
+.board-alibi .cell.sel .alibi-token {
+  box-shadow: 0 0 0 2px #fff, 0 0 0 4px #0f172a;
+}
+.board-alibi .cell.clash .alibi-token {
+  box-shadow: 0 0 0 3px var(--bad);
+}
+.board-alibi .cell.culprit .alibi-token {
+  box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--bad);
+}
+.board-alibi .cell[data-v='mark']::before,
+.board-alibi .cell[data-v='mark']::after {
+  content: '';
+  position: absolute;
+  width: 34%;
+  height: 2.5px;
+  background: currentColor;
+  border-radius: 2px;
+  transform: rotate(45deg);
+}
+.board-alibi .cell[data-v='mark']::after {
+  transform: rotate(-45deg);
+}
+.board-alibi .cell.auto::before,
+.board-alibi .cell.auto::after {
+  opacity: 0.35;
+}
+.board-alibi .cell.wrong {
+  box-shadow: inset 0 0 0 3px var(--bad);
+}
+
+.alibi-clues {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  /* Leave the board a full-width square where the screen is tall enough; scroll the statements otherwise. */
+  max-height: max(7.5rem, 100dvh - 100vw - 15rem);
+  overflow-y: auto;
+  margin-bottom: 0.4rem;
+}
+.alibi-clue {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0.5rem;
+  border: 1px solid var(--line);
+  border-radius: 0.6rem;
+  background: var(--surface);
+  color: var(--fg);
+  font: inherit;
+  font-size: 0.86rem;
+  line-height: 1.25;
+  text-align: left;
+  min-height: 2.2rem;
+}
+.alibi-clue .alibi-token {
+  font-size: 0.8rem;
+}
+.alibi-clue[aria-pressed='true'] {
+  border-color: var(--accent);
+  box-shadow: inset 0 0 0 1px var(--accent);
+  background: var(--highlight);
+}
+.alibi-clue.placed .alibi-token {
+  opacity: 0.45;
+}
+.alibi-clue.wrong,
+.alibi-clue.culprit {
+  border-color: var(--bad);
+  box-shadow: inset 0 0 0 1px var(--bad);
+}
+.alibi-room {
+  white-space: nowrap;
+}
+.alibi-swatch {
+  display: inline-block;
+  width: 0.85em;
+  height: 0.85em;
+  margin-right: 0.25em;
+  border: 1px solid rgba(15, 23, 42, 0.45);
+  border-radius: 0.2em;
+  vertical-align: -0.08em;
+}
+.alibi-verdict {
+  margin: 0 0 0.4rem;
+  font-weight: 600;
+  text-align: center;
+}

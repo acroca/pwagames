@@ -5,7 +5,7 @@
 
 **[▶ Play at acroca.com/pwagames](https://acroca.com/pwagames/)**
 
-A free, open-source Progressive Web App with twenty-seven logic puzzle games, designed for phones.
+A free, open-source Progressive Web App with twenty-eight logic puzzle games, designed for phones.
 No ads, no accounts, works offline.
 
 Every puzzle is generated on the fly, has exactly one solution, and can be solved by logic
@@ -243,6 +243,14 @@ Cross out pairs of numbers that are equal or add up to 10. A pair must be neighb
 
 <img src="docs/taketen.png" width="240" alt="Take Ten (Numberama)" />
 
+### Alibi
+
+A deduction case. Everyone in the house, the victim included, stood on a different square, one person in every row and column, and never on an object. Each person's statement is true: which room they were in, what they stood next to, where they were relative to someone else. Place everyone; the only suspect in the victim's room is the culprit.
+
+**Sizes:** 5×5 – 9×9
+
+<img src="docs/alibi.png" width="240" alt="Alibi" />
+
 ## Shared features
 
 Every game has the same app bar and behaviour:
@@ -362,6 +370,12 @@ solver and an independent rule checker.
   squares with a clear line between them at each step (preferring pairs that only open up once others are gone) and
   only then deciding their two digits, favouring digits that add few ready-made pairs to the starting sheet. The
   moves are stored with the puzzle, and tests replay them against the rules to confirm the sheet empties.
+- **Alibi**: the house is cut into rectangular rooms and a few kinds of objects are scattered over it; people are
+  placed one per row and column, and a room holding exactly two of them becomes the scene (victim and culprit).
+  Everyone gets one true statement, drawn at random from all that hold for them; statements of whoever the solver
+  can't place are then swapped or doubled up, keeping a change only if it leaves fewer candidate squares, and spare
+  second statements are taken back. The solver uses "this square leaves someone else nowhere to stand", rows and
+  columns only one person can reach, the one-suspect-in-the-victim's-room rule and one-step lookahead.
 
 ## Project layout
 
