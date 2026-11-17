@@ -372,10 +372,11 @@ solver and an independent rule checker.
   moves are stored with the puzzle, and tests replay them against the rules to confirm the sheet empties.
 - **Alibi**: the house is cut into rectangular rooms and a few kinds of objects are scattered over it; people are
   placed one per row and column, and a room holding exactly two of them becomes the scene (victim and culprit).
-  Everyone gets one true statement, drawn at random from all that hold for them; statements of whoever the solver
-  can't place are then swapped or doubled up, keeping a change only if it leaves fewer candidate squares, and spare
-  second statements are taken back. The solver uses "this square leaves someone else nowhere to stand", rows and
-  columns only one person can reach, the one-suspect-in-the-victim's-room rule and one-step lookahead.
+  Everyone gets one true statement, drawn at random from all that hold for them (rooms and neighbouring objects
+  are favoured); statements of whoever the solver can't place are then swapped or given a second one, keeping a
+  change only if it leaves fewer candidate squares. The solver uses "this square leaves someone else nowhere to
+  stand", rows and columns only one person can reach and the one-suspect-in-the-victim's-room rule. One-step
+  lookahead is deliberately left out, so no case needs trying squares out.
 
 ## Project layout
 
