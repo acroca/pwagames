@@ -1610,6 +1610,81 @@ const RAW: Record<string, RawGuide> = {
       ],
     },
   },
+  alibi: {
+    goal: {
+      en: 'Work out where everyone in the house was standing, and so who was alone with the victim.',
+      es: 'Averigua dónde estaba cada persona de la casa y, con eso, quién estaba a solas con la víctima.',
+    },
+    rules: {
+      en: [
+        'Everyone, the victim (☠) included, stands on a different square: exactly one person in each row and exactly one in each column.',
+        'Nobody stands on a square that holds an object.',
+        'Every statement is true.',
+        '“Next to” an object means on a square that shares a side with it, in the same room. “Touching diagonally” means the two squares meet at a corner, whatever the walls.',
+        '“In a row above” means anywhere higher up on the board, in any column. Below, left and right work the same way.',
+        'Exactly one suspect was in the victim’s room: the culprit. Any other room can hold several people, or nobody.',
+      ],
+      es: [
+        'Cada persona, incluida la víctima (☠), ocupa una casilla distinta: exactamente una persona en cada fila y exactamente una en cada columna.',
+        'Nadie está en una casilla que tenga un objeto.',
+        'Todas las declaraciones son ciertas.',
+        '«Junto a» un objeto significa en una casilla que comparte un lado con él, dentro de la misma habitación. «Tocar en diagonal» significa que las dos casillas se tocan por una esquina, haya o no paredes.',
+        '«En una fila por encima» significa en cualquier fila más alta del tablero, en cualquier columna. Por debajo, izquierda y derecha funcionan igual.',
+        'En la habitación de la víctima había exactamente un sospechoso: el culpable. En cualquier otra habitación puede haber varias personas, o ninguna.',
+      ],
+    },
+    controls: {
+      en: [
+        'Tap a statement to pick that person. The board shows the ✕ marks of the person picked.',
+        'Tap a square to cycle: ✕ (this person wasn’t here) → place the person → empty. Drag to put ✕ on several squares; a drag that starts on a ✕ erases them instead.',
+        'Tap someone on the board to pick them, and tap them again to take them off.',
+        'When you place someone, the app adds a fainter ✕ along their row and column for everybody else. Tapping one of those places the person straight away. Settings can switch this off.',
+        'People who share a row or column get a red ring. A room named in the picked person’s statement is shown lighter.',
+        'The puzzle is solved when everyone is on the right square. The culprit is then named.',
+      ],
+      es: [
+        'Toca una declaración para elegir a esa persona. El tablero muestra las ✕ de la persona elegida.',
+        'Toca una casilla para alternar: ✕ (esta persona no estaba aquí) → colocar a la persona → vacía. Arrastra para poner ✕ en varias casillas; si empiezas sobre una ✕, las borra.',
+        'Toca a alguien en el tablero para elegirlo, y vuelve a tocarlo para quitarlo.',
+        'Al colocar a alguien, la app pone una ✕ más tenue en su fila y su columna para todos los demás. Si tocas una de esas, coloca a la persona directamente. Puedes desactivarlo en Ajustes.',
+        'Las personas que comparten fila o columna llevan un aro rojo. La habitación nombrada en la declaración de la persona elegida se ve más clara.',
+        'El caso está resuelto cuando todos están en su casilla. Entonces se nombra al culpable.',
+      ],
+    },
+    examples: [
+      ex(
+        { grid: ['. . ☠ .', '. . . *B', 'A 🌿 . .', '. C . .'], regions: ['a a b b', 'a a b b', 'c c c c', 'c c c c'], mark: 'ok' },
+        'A solved 4×4: one person in every row and every column. Bruno (B) is the only one in the victim’s room, so Bruno did it.',
+        'Un 4×4 resuelto: una persona en cada fila y en cada columna. Bruno (B) es el único en la habitación de la víctima, así que fue Bruno.',
+      ),
+      ex(
+        { grid: ['. *. .', '*. 🌿 .', '. *. .'], regions: ['a a b', 'a a b', 'a a b'] },
+        '“Next to a plant” leaves the three highlighted squares. The square to the right of the plant is in another room, so it doesn’t count.',
+        '«Junto a una planta» deja las tres casillas resaltadas. La casilla a la derecha de la planta está en otra habitación, así que no cuenta.',
+      ),
+      ex(
+        { grid: ['!A . .', '. . B', '!C . .'], regions: ['a a b', 'a a b', 'a a b'], mark: 'bad' },
+        'Not allowed: Ana (A) and Carla (C) are in the same column.',
+        'No permitido: Ana (A) y Carla (C) están en la misma columna.',
+      ),
+    ],
+    tips: {
+      en: [
+        'Start with the statements that leave the fewest squares: a named room, or an object that appears only once or twice.',
+        'Each person has their own ✕ marks. Take the statements one at a time and cross out what each one rules out.',
+        'Statements about two people work both ways: if Ana was in a row above Bruno, Ana can’t be in the bottom row and Bruno can’t be in the top row.',
+        'If someone can only be in one row or column, nobody else can use it.',
+        'Keep the victim’s room in mind: once you know it, exactly one suspect fits in it and everyone else is outside.',
+      ],
+      es: [
+        'Empieza por las declaraciones que dejan menos casillas: una habitación con nombre, o un objeto que solo aparece una o dos veces.',
+        'Cada persona tiene sus propias ✕. Ve declaración por declaración y tacha lo que descarta cada una.',
+        'Las declaraciones sobre dos personas sirven en ambos sentidos: si Ana estaba en una fila por encima de Bruno, Ana no puede estar en la última fila ni Bruno en la primera.',
+        'Si alguien solo puede estar en una fila o columna, nadie más puede usarla.',
+        'Ten presente la habitación de la víctima: en cuanto la conozcas, en ella cabe exactamente un sospechoso y todos los demás están fuera.',
+      ],
+    },
+  },
 };
 
 export const GUIDE_IDS = Object.keys(RAW);
