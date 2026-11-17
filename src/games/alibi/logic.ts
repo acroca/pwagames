@@ -577,19 +577,19 @@ function makeSolution(layout: Layout, rng: Rng): { solution: number[]; culprit: 
 
 /** How readily each kind of statement is picked. */
 const WEIGHT: Record<Clue['kind'], number> = {
-  room: 1,
+  room: 3,
   beside: 3,
-  clear: 1,
-  row: 2,
-  col: 2,
-  outer: 1.5,
+  clear: 0.7,
+  row: 1.5,
+  col: 1.5,
+  outer: 1,
   alone: 2.5,
   with: 2.5,
   diag: 3,
-  above: 0.6,
-  below: 0.6,
-  left: 0.6,
-  right: 0.6,
+  above: 0.4,
+  below: 0.4,
+  left: 0.4,
+  right: 0.4,
 };
 
 /** Every true statement about one person. Nothing links the victim to a room-mate: that is for the player to find. */
@@ -619,16 +619,17 @@ function trueClues(layout: Layout, solution: number[], who: number): Clue[] {
 }
 
 /**
- * Hands out statements: one each to start with, then swaps or adds statements for whoever the solver can't place,
- * keeping a change only when it leaves fewer open squares. Returns null when that doesn't reach a solved puzzle.
+ * Hands out statements: one each to start with, then swaps or adds statements for whoever the plain deductions
+ * can't place, keeping a change only when it leaves fewer open squares. Lookahead is never counted on, so a case
+ * can be worked through without trying squares out. Returns null when that doesn't reach a solved puzzle.
  */
 function chooseClues(layout: Layout, solution: number[], rng: Rng): Clue[][] | null {
   const n = layout.size;
   const base = makeBase(layout);
   const pools = solution.map((_, who) => trueClues(layout, solution, who));
   const clues: Clue[][] = solution.map(() => []);
-  const maxRooms = Math.ceil(n / 3);
-  const maxExtra = Math.ceil(n / 2);
+  const maxRooms = Math.ceil(n / 2);
+  const maxExtra = n;
 
   const allowed = (who: number, clue: Clue, skip?: Clue): boolean => {
     const mine = clues[who].filter((x) => x !== skip);
@@ -657,7 +658,7 @@ function chooseClues(layout: Layout, solution: number[], rng: Rng): Clue[][] | n
     clues[who].push(clue);
   }
 
-  let res = solveWith(base, clues);
+  let res = solveWith(base, clues, PLAIN);
   for (let step = 0; step < 14 * n && !res.solved; step++) {
     const stuck = res.positions.flatMap((cell, who) => (cell < 0 ? [who] : []));
     const who = stuck[randInt(rng, stuck.length)];
@@ -673,20 +674,12 @@ function chooseClues(layout: Layout, solution: number[], rng: Rng): Clue[][] | n
       if (!clue) continue;
       clues[who][at] = clue;
     }
-    const next = solveWith(base, clues);
+    const next = solveWith(base, clues, PLAIN);
     if (next.open < res.open) res = next;
     else clues[who] = before;
   }
   if (!res.solved) return null;
 
-  // Take back second statements that turned out not to be needed.
-  for (const who of shuffle(rng, solution.map((_, i) => i))) {
-    for (let at = clues[who].length - 1; at >= 0 && clues[who].length > 1; at--) {
-      const before = clues[who].slice();
-      clues[who].splice(at, 1);
-      if (!solveWith(base, clues).solved) clues[who] = before;
-    }
-  }
   return clues;
 }
 

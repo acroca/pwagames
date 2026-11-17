@@ -75,7 +75,7 @@ describe('generate', () => {
   for (const { id } of VARIANTS) {
     const n = Number(id);
     it(
-      `produces unique, logic-solvable ${id}×${id} cases`,
+      `produces unique ${id}×${id} cases that need no lookahead`,
       () => {
         for (let seed = 1; seed <= (n >= 8 ? 4 : 10); seed++) {
           const p = generate(id, seed * 7919);
@@ -100,7 +100,8 @@ describe('generate', () => {
           expect(p.culprit).toBeGreaterThan(VICTIM);
           expect(validate(p, p.solution)).toBe(true);
           expect(countSolutions(p)).toBe(1);
-          const res = solveLogic(p);
+          // Solvable without trying squares out.
+          const res = solveLogic(p, PLAIN);
           expect(res.solved).toBe(true);
           expect(res.positions).toEqual(p.solution);
         }
