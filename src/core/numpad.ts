@@ -53,7 +53,8 @@ export interface Pad {
  * Select-a-cell-then-tap-a-digit input with notes, shared by the number games.
  * Draws digits and notes into `.val` / `.notes` children of each cell and the
  * number pad into the toolbar. Never brings up the on-screen keyboard, but a
- * physical one works too: digits enter, Backspace / Delete erase.
+ * physical one works too: digits enter, Backspace / Delete erase, arrows move
+ * the selection and N toggles notes.
  */
 export function mountPad(opts: PadOptions): Pad {
   const { ctx, cells, max } = opts;
@@ -95,10 +96,15 @@ export function mountPad(opts: PadOptions): Pad {
   const notesBtn = el('button', 'tool notes-toggle');
   notesBtn.type = 'button';
   notesBtn.append(el('span', 'pencil', '✎'), el('span', '', t('Notes')));
-  notesBtn.addEventListener('click', () => {
+  // Shortcut hint, shown only once a physical keyboard is likely (fine pointer) or proven (a key press).
+  const notesKey = el('kbd', 'key-hint', 'N');
+  notesKey.hidden = !matchMedia('(pointer: fine)').matches;
+  notesBtn.append(notesKey);
+  const toggleNotes = () => {
     notesMode = !notesMode;
     renderPad();
-  });
+  };
+  notesBtn.addEventListener('click', toggleNotes);
   modes.append(notesBtn);
   ctx.toolbar.append(modes, pad);
 
@@ -191,10 +197,39 @@ export function mountPad(opts: PadOptions): Pad {
     end() {},
   });
 
+  // The cells form a square grid in row order; arrows skip cells that take no input.
+  const side = Math.round(Math.sqrt(cells.length));
+  const ARROWS: Record<string, [number, number]> = {
+    ArrowUp: [-1, 0],
+    ArrowDown: [1, 0],
+    ArrowLeft: [0, -1],
+    ArrowRight: [0, 1],
+  };
+  function move([dr, dc]: [number, number]) {
+    if (selected === null) {
+      const first = cells.findIndex(Boolean);
+      if (first < 0) return;
+      selected = first;
+    } else {
+      let r = Math.floor(selected / side) + dr;
+      let c = (selected % side) + dc;
+      while (r >= 0 && r < side && c >= 0 && c < side && !cells[r * side + c]) {
+        r += dr;
+        c += dc;
+      }
+      if (r < 0 || r >= side || c < 0 || c >= side) return;
+      selected = r * side + c;
+    }
+    render();
+  }
+
   const onKey = (e: KeyboardEvent) => {
     if (e.ctrlKey || e.metaKey || e.altKey || document.querySelector('dialog[open]')) return;
+    notesKey.hidden = false;
     if (e.key === 'Backspace' || e.key === 'Delete') clear();
     else if (/^[1-9]$/.test(e.key) && +e.key <= max) enter(+e.key);
+    else if (ARROWS[e.key]) move(ARROWS[e.key]);
+    else if (e.key.toLowerCase() === 'n') toggleNotes();
     else return;
     e.preventDefault();
   };
