@@ -260,8 +260,7 @@ A deduction case. Everyone in the house, the victim included, stood on a differe
 Every game has the same app bar and behaviour:
 
 - **Menu cards** list the games, with the in-progress puzzle or your best time. Tap a card's
-  heart to make it a **favourite**: favourites are listed first. Recently added games carry a
-  **New** badge until you open them.
+  heart to make it a **favourite**: favourites are listed first.
 - **Undo** steps back through your moves; **Check** flags entries that contradict the
   solution. (Minesweeper has neither: opening a mine ends the game, with an option to retry
   the same board.)
