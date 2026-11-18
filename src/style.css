@@ -692,6 +692,8 @@ button.primary {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
+  /* When the message and its button wrap onto two lines, the board gives up the height, not this line. */
+  flex: none;
   min-height: 2.75rem;
   margin: 0.25rem 0.75rem 0;
   font-size: 1.1rem;
