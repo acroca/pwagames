@@ -135,6 +135,8 @@ button:disabled {
 }
 
 .topbar {
+  /* The bar keeps its height; whatever is below it shares the rest. */
+  flex: none;
   min-height: calc(var(--safe-top) + 3.75rem);
   row-gap: 0.4rem;
 }
@@ -2531,10 +2533,41 @@ button.primary {
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
-  /* The game sets max-height to whatever the board can spare. */
+  flex: 0 1 auto;
+  min-height: 6rem;
   overflow-y: auto;
   overscroll-behavior: contain;
   margin-bottom: 0.4rem;
+}
+
+/*
+ * The board and the statements share the height of the screen. Both start at their full size; when that is too
+ * much, the board area shrinks first (it shrinks 1000 times more readily), down to squares that are still easy to
+ * tap, and only then does the list give up height and scroll. The sizes repeat the shell's fit: squares of at most
+ * 72px, 12px of margin across and 8px down.
+ */
+.screen:has(.board-alibi) {
+  --board-full: calc(min(100vw - 12px, var(--fit-rows) * 72px) + 8px);
+  --board-tight: calc(min(100vw - 12px, var(--fit-rows) * 40px) + 8px);
+  /* On a short screen the board gives way further, so the bars and a few statements always fit. */
+  --board-least: max(8rem, min(var(--board-tight), 100dvh - 21rem - var(--safe-top) - var(--safe-bottom)));
+}
+.screen:has(.board-alibi) .play {
+  flex: 1 1000 auto;
+  /* The status line below the board takes 3rem. */
+  min-height: calc(var(--board-least) + 3rem);
+}
+.screen:has(.board-alibi) .board-wrap {
+  flex: 1 1 var(--board-full);
+}
+.screen:has(.board-alibi) .toolbar {
+  display: flex;
+  flex-direction: column;
+  /* Without this the bar never gets shorter than the whole list. */
+  min-height: 0;
+}
+.screen:has(.board-alibi) .toolbar > :not(.alibi-clues) {
+  flex: none;
 }
 .alibi-clue {
   display: flex;
