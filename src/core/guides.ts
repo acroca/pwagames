@@ -1685,6 +1685,82 @@ const RAW: Record<string, RawGuide> = {
       ],
     },
   },
+  logicgrid: {
+    goal: {
+      en: 'Use the clues to work out which item of each group belongs to each person.',
+      es: 'Usa las pistas para averiguar qué elemento de cada grupo corresponde a cada persona.',
+    },
+    rules: {
+      en: [
+        'The people are the columns. The rows come in groups (pets, sports, ages…) with as many items as there are people.',
+        'In every group each person has exactly one item, and no two people have the same one: one ✓ in each column of the group and one in each row.',
+        'Every clue is true.',
+        '“Whoever has a dog” is one of the people, and you may not know which yet. A clue never compares someone with themselves: “Ana is older than whoever has a dog” also tells you the dog isn’t Ana’s.',
+        '“Ana has a dog or a cat” means one of the two is hers; the other belongs to someone else.',
+      ],
+      es: [
+        'Las personas son las columnas. Las filas van en grupos (mascotas, deportes, edades…) con tantos elementos como personas.',
+        'En cada grupo cada persona tiene exactamente un elemento, y no hay dos personas con el mismo: un ✓ en cada columna del grupo y uno en cada fila.',
+        'Todas las pistas son ciertas.',
+        '«Quien tiene un perro» es una de las personas, y puede que aún no sepas cuál. Una pista nunca compara a alguien consigo mismo: «Ana es mayor que quien tiene un perro» también te dice que el perro no es de Ana.',
+        '«Ana tiene un perro o un gato» significa que uno de los dos es suyo; el otro es de otra persona.',
+      ],
+    },
+    controls: {
+      en: [
+        'Tap a square to cycle: ✕ (it isn’t theirs) → ✓ (it is) → empty. Drag to put ✕ on several squares; a drag that starts on a ✕ erases them instead.',
+        'When you place a ✓, the app adds a fainter ✕ to the rest of its row and of its column within the group. Settings can switch this off.',
+        'Two ✓ in the same row, or in the same column of a group, turn red.',
+        'Tap a clue to cross it off once you have used it up; tap it again to bring it back.',
+        'The puzzle is solved when every ✓ is in place. You don’t need to fill in the ✕.',
+      ],
+      es: [
+        'Toca una casilla para alternar: ✕ (no es suyo) → ✓ (sí lo es) → vacía. Arrastra para poner ✕ en varias casillas; si empiezas sobre una ✕, las borra.',
+        'Al colocar un ✓, la app pone una ✕ más tenue en el resto de su fila y de su columna dentro del grupo. Puedes desactivarlo en Ajustes.',
+        'Dos ✓ en la misma fila, o en la misma columna de un grupo, se ponen en rojo.',
+        'Toca una pista para tacharla cuando ya la hayas aprovechado del todo; tócala otra vez para recuperarla.',
+        'El cuadro está resuelto cuando todos los ✓ están en su sitio. No hace falta rellenar las ✕.',
+      ],
+    },
+    examples: [
+      ex(
+        ['_ ^A ^B ^C', '^🐶 *✓ :x :x', '^🐱 :x :x *✓', '^🐰 :x *✓ :x'],
+        'A solved group: one ✓ in every row and every column. Ana (A) has the dog, Carla (C) the cat and Bruno (B) the rabbit.',
+        'Un grupo resuelto: un ✓ en cada fila y en cada columna. Ana (A) tiene el perro, Carla (C) el gato y Bruno (B) el conejo.',
+      ),
+      ex(
+        ['_ ^A ^B ^C', '^🐶 . . .', '^🐱 . . .', '^🐰 *:x . .'],
+        '“Ana has a dog or a cat”: the rabbit isn’t hers, so it gets a ✕ in her column (A).',
+        '«Ana tiene un perro o un gato»: el conejo no es suyo, así que lleva una ✕ en su columna (A).',
+      ),
+      ex(
+        ['_ ^A ^B ^C', '^6 . . *:x', '^7 . . .', '^8 *:x . .'],
+        '“Ana is younger than Carla”: Ana (A) can’t be the oldest and Carla (C) can’t be the youngest.',
+        '«Ana es menor que Carla»: Ana (A) no puede ser la mayor ni Carla (C) la menor.',
+      ),
+      ex(
+        ['_ ^A ^B ^C', '^🐶 !✓ . .', '^🐱 !✓ . .', '^🐰 . . .'],
+        'Not allowed: Ana (A) has two pets.',
+        'No permitido: Ana (A) tiene dos mascotas.',
+      ),
+    ],
+    tips: {
+      en: [
+        'Start with the clues that name a person: they put a ✓ or some ✕ on the grid straight away.',
+        'A clue that links two groups works person by person. “Whoever has a dog plays tennis”: anyone who can’t have the dog can’t play tennis either, and the other way round.',
+        '“Whoever has a dog doesn’t play tennis” only helps once you know who has one of the two: then the other gets a ✕ for that person.',
+        'With ages, look at the ends. Someone older than another person can’t be the youngest, and “one year older” rules out more: the two ages must be next to each other.',
+        'When a row or a column of a group has a single empty square left, the ✓ goes there.',
+      ],
+      es: [
+        'Empieza por las pistas que nombran a una persona: ponen un ✓ o alguna ✕ en el cuadro enseguida.',
+        'Una pista que une dos grupos se aplica persona a persona. «Quien tiene un perro juega al tenis»: quien no puede tener el perro tampoco puede jugar al tenis, y al revés.',
+        '«Quien tiene un perro no juega al tenis» solo ayuda cuando sabes quién tiene una de las dos cosas: entonces la otra lleva una ✕ para esa persona.',
+        'Con las edades, mira los extremos. Quien es mayor que otra persona no puede ser el más joven, y «un año más» descarta todavía más: las dos edades tienen que ser seguidas.',
+        'Cuando en una fila o una columna de un grupo queda una sola casilla libre, ahí va el ✓.',
+      ],
+    },
+  },
 };
 
 export const GUIDE_IDS = Object.keys(RAW);

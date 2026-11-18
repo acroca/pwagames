@@ -27,6 +27,7 @@ import { mosaic } from './mosaic';
 import { jigsaw } from './jigsaw';
 import { taketen } from './taketen';
 import { alibi } from './alibi';
+import { logicgrid } from './logicgrid';
 
 /** Games in menu order. */
-export const GAMES: GameModule[] = [nonogram, binairo, queens, sudoku, jigsaw, killer, kenken, futoshiki, skyscrapers, kakuro, hitori, nurikabe, slitherlink, minesweeper, tents, lightup, bridges, battleships, masyu, norinori, fillomino, kuromasu, dominosa, numberlink, thermometers, mosaic, taketen, alibi];
+export const GAMES: GameModule[] = [nonogram, binairo, queens, sudoku, jigsaw, killer, kenken, futoshiki, skyscrapers, kakuro, hitori, nurikabe, slitherlink, minesweeper, tents, lightup, bridges, battleships, masyu, norinori, fillomino, kuromasu, dominosa, numberlink, thermometers, mosaic, taketen, alibi, logicgrid];

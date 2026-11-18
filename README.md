@@ -5,7 +5,7 @@
 
 **[▶ Play at acroca.com/pwagames](https://acroca.com/pwagames/)**
 
-A free, open-source Progressive Web App with twenty-eight logic puzzle games, designed for phones.
+A free, open-source Progressive Web App with twenty-nine logic puzzle games, designed for phones.
 No ads, no accounts, works offline.
 
 Every puzzle is generated on the fly, has exactly one solution, and can be solved by logic
@@ -255,6 +255,14 @@ A deduction case. Everyone in the house, the victim included, stood on a differe
 
 <img src="docs/alibi.png" width="240" alt="Alibi" />
 
+### Logic Grid
+
+The classic clue puzzle. A few people each have one item from every group — a pet, a sport, an age — and no two share one. Read the clues ("Ana has a dog or a cat", "Whoever plays tennis is older than Bruno"), cross off what can't be and tick what must be until you know who has what.
+
+**Sizes:** 5 people with 1 group, 4 or 5 people with 2 groups, 4 people with 3 groups
+
+<img src="docs/logicgrid.png" width="240" alt="Logic Grid" />
+
 ## Shared features
 
 Every game has the same app bar and behaviour:
@@ -381,6 +389,12 @@ solver and an independent rule checker.
   change only if it leaves fewer candidate squares. The solver uses "this square leaves someone else nowhere to
   stand", rows and columns only one person can reach and the one-suspect-in-the-victim's-room rule. One-step
   lookahead is deliberately left out, so no case needs trying squares out.
+- **Logic Grid**: items are dealt to the people at random and every true clue is listed: who has (or doesn't
+  have) what, which items of two groups go together (or don't), a choice of two items, and age comparisons. Clues
+  are taken in a weighted random order, keeping each one that settles more squares, until the solver finishes;
+  then every clue the solver can do without is dropped, plain "Ana has a dog" clues first. The solver works on
+  the grid the player sees and reads one clue at a time, plus "one item left for this person" and "one person
+  left for this item", so nothing needs trying out. The counting solver tries every way to hand out the items.
 
 ## Project layout
 
