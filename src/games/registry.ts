@@ -32,7 +32,4 @@ import { alibi } from './alibi';
 export const GAMES: GameModule[] = [nonogram, binairo, queens, sudoku, jigsaw, killer, kenken, futoshiki, skyscrapers, kakuro, hitori, nurikabe, slitherlink, minesweeper, tents, lightup, bridges, battleships, masyu, norinori, fillomino, kuromasu, dominosa, numberlink, thermometers, mosaic, taketen, alibi];
 
 /** Recently added games, flagged with a "New" badge on the menu. */
-export const NEW_GAMES: ReadonlySet<string> = new Set([
-  'jigsaw', 'skyscrapers', 'tents', 'lightup', 'bridges', 'battleships', 'masyu',
-  'norinori', 'fillomino', 'kuromasu', 'dominosa', 'numberlink', 'thermometers', 'mosaic', 'taketen', 'alibi',
-]);
+export const NEW_GAMES: ReadonlySet<string> = new Set();
