@@ -157,7 +157,12 @@ export const alibi: GameModule<AlibiPuzzle, AlibiState> = {
       list.style.maxHeight = `${Math.max(120, roomy, Math.min(list.scrollHeight, tight))}px`;
       list.scrollTop = scroll;
     };
-    window.addEventListener('resize', layout);
+    // Watches the screen and the status line rather than window resizes: a phone can settle its screen height after
+    // the game is drawn without ever reporting a resize, which left the list at the size of that first, shorter screen.
+    const resized = new ResizeObserver(layout);
+    for (const node of [wrap.closest('.screen'), wrap.parentElement?.querySelector('.status')]) {
+      if (node) resized.observe(node);
+    }
 
     /** Squares shown with ✕ for the selected person: their own marks plus, if enabled, squares others rule out. */
     const shownMarks = () => {
@@ -295,7 +300,7 @@ export const alibi: GameModule<AlibiPuzzle, AlibiState> = {
       },
       destroy() {
         stop();
-        window.removeEventListener('resize', layout);
+        resized.disconnect();
       },
     };
   },

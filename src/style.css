@@ -77,6 +77,20 @@ body {
   user-select: none;
 }
 
+/*
+ * Installed on an iPhone, the page can be laid out shorter than the screen by the height of the status bar, which
+ * leaves an empty strip under the toolbar. An installed app has no browser bars, so 100vh is the whole screen.
+ */
+@media (display-mode: standalone) {
+  html,
+  body {
+    height: 100vh;
+  }
+  body {
+    bottom: auto;
+  }
+}
+
 button {
   font: inherit;
   color: inherit;
