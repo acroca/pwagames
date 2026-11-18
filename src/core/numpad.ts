@@ -52,7 +52,8 @@ export interface Pad {
 /**
  * Select-a-cell-then-tap-a-digit input with notes, shared by the number games.
  * Draws digits and notes into `.val` / `.notes` children of each cell and the
- * number pad into the toolbar. Never uses the system keyboard.
+ * number pad into the toolbar. Never brings up the on-screen keyboard, but a
+ * physical one works too: digits enter, Backspace / Delete erase.
  */
 export function mountPad(opts: PadOptions): Pad {
   const { ctx, cells, max } = opts;
@@ -190,10 +191,22 @@ export function mountPad(opts: PadOptions): Pad {
     end() {},
   });
 
+  const onKey = (e: KeyboardEvent) => {
+    if (e.ctrlKey || e.metaKey || e.altKey || document.querySelector('dialog[open]')) return;
+    if (e.key === 'Backspace' || e.key === 'Delete') clear();
+    else if (/^[1-9]$/.test(e.key) && +e.key <= max) enter(+e.key);
+    else return;
+    e.preventDefault();
+  };
+  document.addEventListener('keydown', onKey);
+
   return {
     render,
     showMistakes: (wrong) => wrong.forEach((i) => cells[i]?.classList.add('wrong')),
-    destroy: stop,
+    destroy() {
+      stop();
+      document.removeEventListener('keydown', onKey);
+    },
   };
 }
 
