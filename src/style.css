@@ -2516,17 +2516,18 @@ button.primary {
 .alibi-clues {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
-  /* Leave the board a full-width square where the screen is tall enough; scroll the statements otherwise. */
-  max-height: max(7.5rem, 100dvh - 100vw - 15rem);
+  gap: 0.3rem;
+  /* The game sets max-height to whatever the board can spare. */
   overflow-y: auto;
+  overscroll-behavior: contain;
   margin-bottom: 0.4rem;
 }
 .alibi-clue {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.3rem 0.5rem;
+  flex: none;
+  padding: 0.4rem 0.6rem;
   border: 1px solid var(--line);
   border-radius: 0.6rem;
   background: var(--surface);
