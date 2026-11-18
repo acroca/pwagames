@@ -268,7 +268,8 @@ Every game has the same app bar and behaviour:
   per game and size.
 - Progress is **saved automatically** (per game), so you can switch games and come back.
 - **English and Spanish**: the language follows the phone's language by default; switch it with
-  the EN / ES selector on the menu. Translations live in `src/core/es.ts` and `src/core/guides.ts`.
+  the EN / ES selector on the menu. A link ending in `?lang=es` (or `?lang=en`) opens the app
+  in that language. Translations live in `src/core/es.ts` and `src/core/guides.ts`.
 - **Rules**: the menu's Rules button (and *How to play* in each game's sheet) explains every game
   with examples.
 - **New** opens a sheet to pick a size or difficulty, start a new puzzle, restart the current

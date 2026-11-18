@@ -10,7 +10,25 @@ export const LANGS: { id: Lang; label: string }[] = [
 const LANG_KEY = 'lang';
 const listeners: (() => void)[] = [];
 
+/**
+ * A language asked for by the link, as in `?lang=es`. It becomes the saved choice and is then
+ * taken out of the address, so that reloading does not undo a later change of language.
+ */
+function fromLink(): Lang | null {
+  if (typeof document === 'undefined') return null;
+  const url = new URL(location.href);
+  const asked = url.searchParams.get('lang')?.toLowerCase();
+  if (asked === undefined) return null;
+  url.searchParams.delete('lang');
+  history.replaceState(history.state, '', url);
+  if (asked !== 'en' && asked !== 'es') return null;
+  save(LANG_KEY, asked);
+  return asked;
+}
+
 function detect(): Lang {
+  const linked = fromLink();
+  if (linked) return linked;
   const saved = load<Lang>(LANG_KEY);
   if (saved === 'en' || saved === 'es') return saved;
   const prefs = navigator.languages?.length ? navigator.languages : [navigator.language];
