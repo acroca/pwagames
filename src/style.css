@@ -2616,3 +2616,154 @@ button.primary {
   font-weight: 600;
   text-align: center;
 }
+
+/* Logic Grid */
+.board-logicgrid {
+  --text: clamp(10px, calc(var(--cell) * 0.3), 15px);
+  display: grid;
+  grid-template-columns: calc(var(--cell) * 3) repeat(var(--n), var(--cell));
+  grid-auto-rows: var(--cell);
+  user-select: none;
+  -webkit-user-select: none;
+}
+.lg-head,
+.lg-label {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  font-size: var(--text);
+  font-weight: 600;
+  line-height: 1.1;
+}
+.lg-head {
+  justify-content: center;
+  align-items: flex-end;
+  padding-bottom: 0.3em;
+  overflow: hidden;
+}
+.lg-label {
+  justify-content: flex-end;
+  gap: 0.35em;
+  padding-right: 0.5em;
+  border-bottom: 1px solid var(--line);
+}
+.lg-label.last {
+  border-bottom: 2px solid var(--line-strong);
+}
+.lg-icon {
+  flex: none;
+  font-size: calc(var(--text) * 1.25);
+}
+.lg-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.board-logicgrid .cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.board-logicgrid .cell.auto::before,
+.board-logicgrid .cell.auto::after {
+  opacity: 0.35;
+}
+.board-logicgrid.solved .cell.crossed::before,
+.board-logicgrid.solved .cell.crossed::after {
+  display: block;
+  opacity: 0.25;
+}
+.lg-yes {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 68%;
+  height: 68%;
+  border-radius: 50%;
+  background: var(--good);
+  color: #fff;
+  font-size: calc(var(--cell) * 0.42);
+  font-weight: 700;
+  line-height: 1;
+  animation: pop 0.2s ease-out;
+}
+.board-logicgrid .cell.clash .lg-yes {
+  background: var(--bad);
+}
+.board-logicgrid .cell.wrong {
+  background: color-mix(in srgb, var(--bad) 30%, var(--surface));
+}
+
+.lg-clues {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  flex: 0 1 auto;
+  min-height: 6rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  margin-bottom: 0.4rem;
+}
+.lg-clue {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: none;
+  padding: 0.4rem 0.6rem;
+  border: 1px solid var(--line);
+  border-radius: 0.6rem;
+  background: var(--surface);
+  color: var(--fg);
+  font: inherit;
+  font-size: 0.86rem;
+  line-height: 1.25;
+  text-align: left;
+  min-height: 2.2rem;
+}
+.lg-num {
+  flex: none;
+  min-width: 1.2em;
+  color: var(--muted);
+  font-weight: 700;
+  text-align: center;
+}
+.lg-clue.done {
+  background: transparent;
+  color: var(--muted);
+}
+.lg-clue.done .lg-text {
+  text-decoration: line-through;
+}
+
+/*
+ * As in Alibi, the board and the clues share the height of the screen: the board shrinks first, down to squares
+ * that are still easy to tap, and only then does the list scroll. The board is not square here, so its height
+ * comes from the width of a square: at most 72px, with 12px of margin across and 8px down.
+ */
+.screen:has(.board-logicgrid) {
+  --board-full: calc(min((100vw - 12px) / var(--fit-cols), 72px) * var(--fit-rows) + 8px);
+  --board-tight: calc(min((100vw - 12px) / var(--fit-cols), 34px) * var(--fit-rows) + 8px);
+  --board-least: max(8rem, min(var(--board-tight), 100dvh - 21rem - var(--safe-top) - var(--safe-bottom)));
+}
+.screen:has(.board-logicgrid) .play {
+  flex: 1 1000 auto;
+  min-height: calc(var(--board-least) + 3rem);
+}
+/* Once solved, the result and the Next puzzle button need more room below the board, and must not be squeezed. */
+.screen:has(.board-logicgrid.solved) .play {
+  min-height: calc(var(--board-least) + 7.5rem);
+}
+.screen:has(.board-logicgrid) .status {
+  flex: none;
+}
+.screen:has(.board-logicgrid) .board-wrap {
+  flex: 1 1 var(--board-full);
+}
+.screen:has(.board-logicgrid) .toolbar {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.screen:has(.board-logicgrid) .toolbar > :not(.lg-clues) {
+  flex: none;
+}
