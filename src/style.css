@@ -594,6 +594,18 @@ button.primary {
 .pad-modes .tool {
   min-height: 44px;
 }
+.key-hint {
+  margin-left: 0.5em;
+  padding: 0 0.4em;
+  border: 1px solid currentColor;
+  border-radius: 4px;
+  font: inherit;
+  font-size: 0.8em;
+  opacity: 0.6;
+}
+.key-hint[hidden] {
+  display: none;
+}
 .pencil {
   font-size: 1.2rem;
 }
