@@ -4,7 +4,7 @@ import { openGuide } from './core/guide';
 import { LANGS, applyStatic, lang, onLangChange, setLang, t } from './core/i18n';
 import { load, loadRaw, save } from './core/storage';
 import { el, formatTime } from './core/util';
-import { GAMES, NEW_GAMES } from './games/registry';
+import { GAMES } from './games/registry';
 import { initInstall, initShare } from './core/install';
 import { trackGame } from './core/analytics';
 import './style.css';
@@ -29,7 +29,6 @@ function migrateLegacyNonogram() {
   }
 }
 
-const OPENED_KEY = 'opened';
 const FAVOURITES_KEY = 'favourites';
 const idSet = (key: string) => new Set(load<string[]>(key) ?? []);
 
@@ -46,7 +45,6 @@ function toggleFavourite(id: string) {
 
 function renderMenu() {
   const best = bestTimes();
-  const opened = idSet(OPENED_KEY);
   const favourites = idSet(FAVOURITES_KEY);
   // Favourites first; the sort is stable, so each group keeps the registry order.
   const games = [...GAMES].sort((a, b) => Number(favourites.has(b.id)) - Number(favourites.has(a.id)));
@@ -71,8 +69,6 @@ function renderMenu() {
     }
     card.append(icon, el('span', 'card-title', t(game.title)), el('span', 'card-blurb', t(game.blurb)));
     if (meta) card.append(el('span', 'card-meta', meta));
-    // A saved puzzle also counts as opened, for games played before opens were tracked.
-    if (NEW_GAMES.has(game.id) && !opened.has(game.id) && !session) card.append(el('span', 'card-badge', t('New')));
     card.addEventListener('click', () => {
       history.pushState({ fromMenu: true }, '', `#/${game.id}`);
       route();
@@ -106,8 +102,6 @@ function route() {
   current = game?.id ?? '';
   if (game) {
     menuScreen.hidden = true;
-    const opened = idSet(OPENED_KEY);
-    if (!opened.has(game.id)) save(OPENED_KEY, [...opened, game.id]);
     screen.open(game);
     trackGame(game.id);
   } else {
