@@ -15,12 +15,64 @@ export const ES: Record<string, string> = {
   'Install Logic Puzzles': 'Instalar Puzzles de lógica',
   'Link copied!': '¡Enlace copiado!',
   'Play free logic puzzles with me!': '¡Juega conmigo a puzzles de lógica gratis!',
-  'In Safari, tap the Share button, then choose “Add to Home Screen”.':
-    'En Safari, toca el botón Compartir y elige «Añadir a pantalla de inicio».',
-  'In your browser menu (⋮), choose “Install app” or “Add to Home screen”.':
-    'En el menú del navegador (⋮), elige «Instalar app» o «Añadir a pantalla de inicio».',
-  'In your browser, look for the install icon in the address bar, or open the menu and choose “Install”.':
-    'En tu navegador, busca el icono de instalar en la barra de direcciones, o abre el menú y elige «Instalar».',
+  'This page is open inside another app, which can’t install it. Open it in Safari first:':
+    'Esta página está abierta dentro de otra app, que no puede instalarla. Ábrela primero en Safari:',
+  'This page is open inside another app, which can’t install it. Open it in Chrome first:':
+    'Esta página está abierta dentro de otra app, que no puede instalarla. Ábrela primero en Chrome:',
+  'Tap the menu (⋯ or ⋮), usually in a top corner.':
+    'Toca el menú (⋯ o ⋮), normalmente en una esquina superior.',
+  'Choose “Open in Safari” or “Open in browser”.':
+    'Elige «Abrir en Safari» o «Abrir en el navegador».',
+  'Choose “Open in Chrome” or “Open in browser”.':
+    'Elige «Abrir en Chrome» o «Abrir en el navegador».',
+  'There, tap “Install app” again.':
+    'Allí, vuelve a tocar «Instalar app».',
+  'Scroll down the list and tap “Add to Home Screen”.':
+    'Desliza la lista hacia abajo y toca «Añadir a pantalla de inicio».',
+  'Tap “Add” in the top corner.':
+    'Toca «Añadir» en la esquina superior.',
+  'Tap “Install” or “Add” to confirm.':
+    'Toca «Instalar» o «Añadir» para confirmar.',
+  'Tap the Share button at the right end of the address bar (a square with an arrow pointing up).':
+    'Toca el botón Compartir, a la derecha de la barra de direcciones (un cuadrado con una flecha hacia arriba).',
+  'If your browser doesn’t show these options, open this page in Safari.':
+    'Si tu navegador no muestra estas opciones, abre esta página en Safari.',
+  'Open the browser menu (☰ or ⋯) and tap “Share”.':
+    'Abre el menú del navegador (☰ o ⋯) y toca «Compartir».',
+  'Tap the Share button (a square with an arrow pointing up). It’s in the bar at the bottom of the screen, or at the top on iPad. If you don’t see it, tap ⋯ first, then “Share”.':
+    'Toca el botón Compartir (un cuadrado con una flecha hacia arriba). Está en la barra inferior de la pantalla, o arriba en el iPad. Si no lo ves, toca primero ⋯ y luego «Compartir».',
+  'Tap the menu (☰) in the bottom corner.':
+    'Toca el menú (☰) en la esquina inferior.',
+  'Tap “Add to” (or “Add page to”), then “Home screen”.':
+    'Toca «Añadir a» (o «Añadir página a») y luego «Pantalla de inicio».',
+  'Tap the menu (⋮) next to the address bar.':
+    'Toca el menú (⋮) junto a la barra de direcciones.',
+  'Tap “Add app to Home screen” (or “Install”).':
+    'Toca «Añadir aplicación a la pantalla de inicio» (o «Instalar»).',
+  'Tap the menu (⋮) in the top corner of the browser.':
+    'Toca el menú (⋮) en la esquina superior del navegador.',
+  'Tap “Add to Home screen” (or “Install app”).':
+    'Toca «Añadir a pantalla de inicio» (o «Instalar aplicación»).',
+  'Firefox can’t install apps on most computers. Open this page in Chrome or Edge and press “Install app” there.':
+    'Firefox no puede instalar apps en la mayoría de ordenadores. Abre esta página en Chrome o Edge y pulsa allí «Instalar app».',
+  'In the menu bar at the top of the screen, open “File”.':
+    'En la barra de menús, en la parte superior de la pantalla, abre «Archivo».',
+  'Choose “Add to Dock”.':
+    'Elige «Añadir al Dock».',
+  'Click “Add”.':
+    'Haz clic en «Añadir».',
+  'Click the install icon at the right end of the address bar.':
+    'Haz clic en el icono de instalar, a la derecha de la barra de direcciones.',
+  'If it isn’t there, open the menu (⋯), then “Apps”, then “Install this site as an app”.':
+    'Si no está, abre el menú (⋯), luego «Aplicaciones» y luego «Instalar este sitio como una aplicación».',
+  'If it isn’t there, open the browser menu (⋮), then “Cast, save, and share”, then “Install page as app”.':
+    'Si no está, abre el menú del navegador (⋮), luego «Enviar, guardar y compartir» y luego «Instalar página como aplicación».',
+  'Click “Install”.':
+    'Haz clic en «Instalar».',
+  'The app then appears on your home screen, opens full-screen and works offline.':
+    'La app aparecerá en tu pantalla de inicio, se abre a pantalla completa y funciona sin conexión.',
+  'Copy link':
+    'Copiar enlace',
   'Language': 'Idioma',
   'Rules': 'Reglas',
   'All games': 'Todos los juegos',

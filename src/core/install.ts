@@ -1,5 +1,6 @@
 import { t } from './i18n';
 import { el } from './util';
+import { installGuide } from './installGuide';
 
 interface InstallPromptEvent extends Event {
   prompt(): Promise<void>;
@@ -14,14 +15,6 @@ function isInstalled(): boolean {
     window.matchMedia('(display-mode: fullscreen)').matches ||
     (navigator as Navigator & { standalone?: boolean }).standalone === true
   );
-}
-
-function instructions(): string {
-  const ua = navigator.userAgent;
-  const ios = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-  if (ios) return 'In Safari, tap the Share button, then choose “Add to Home Screen”.';
-  if (/Android/.test(ua)) return 'In your browser menu (⋮), choose “Install app” or “Add to Home screen”.';
-  return 'In your browser, look for the install icon in the address bar, or open the menu and choose “Install”.';
 }
 
 export function initInstall() {
@@ -52,11 +45,34 @@ export function initInstall() {
       if (outcome === 'accepted') btn.hidden = true;
       return;
     }
+    const guide = installGuide(navigator.userAgent, navigator.maxTouchPoints > 1);
     const body = el('div', 'sheet-body');
+    body.append(el('h2', '', t('Install Logic Puzzles')));
+    if (guide.note) body.append(el('p', 'install-note', t(guide.note)));
+    if (guide.steps.length) {
+      const list = el('ol', 'install-steps');
+      for (const step of guide.steps) list.append(el('li', '', t(step)));
+      body.append(list);
+      if (!guide.redirect)
+        body.append(el('p', 'install-note', t('The app then appears on your home screen, opens full-screen and works offline.')));
+    }
+    if (guide.copyLink && navigator.clipboard) {
+      const copy = el('button', 'wide', t('Copy link'));
+      copy.type = 'button';
+      copy.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(location.origin + location.pathname);
+          copy.textContent = t('Link copied!');
+        } catch {
+          // Clipboard unavailable.
+        }
+      });
+      body.append(copy);
+    }
     const close = el('button', 'wide', t('Close'));
     close.type = 'button';
     close.addEventListener('click', () => sheet.close());
-    body.append(el('h2', '', t('Install Logic Puzzles')), el('p', '', t(instructions())), close);
+    body.append(close);
     sheet.replaceChildren(body);
     sheet.showModal();
   });

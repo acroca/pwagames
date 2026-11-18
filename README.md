@@ -20,8 +20,12 @@ its sheets are instead guaranteed to be clearable.
 
 Open the link above on your phone and tap **Install app**, or:
 
-- **iPhone / iPad**: in Safari, **Share → Add to Home Screen**.
-- **Android**: in the browser menu (⋮), **Install app** or **Add to Home screen**.
+- **iPhone / iPad**: tap the **Share** button (in Safari it's in the bottom bar), then **Add to Home Screen**, then **Add**.
+- **Android**: open the browser menu (⋮, or ☰ in Samsung Internet), then **Add to Home screen** or **Install app**.
+- **Computer**: in Chrome or Edge, click the install icon at the right end of the address bar. In Safari, **File → Add to Dock**.
+
+If the page opened inside another app (Instagram, WhatsApp…), open it in Safari or Chrome first.
+The **Install app** button shows the exact steps for your browser.
 
 It then runs full-screen and works offline.
 
