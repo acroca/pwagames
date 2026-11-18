@@ -1730,6 +1730,26 @@ button.primary {
 }
 
 /* Install + about footer */
+.install-steps {
+  margin: 0;
+  padding-left: 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  line-height: 1.4;
+}
+
+.install-steps li::marker {
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.install-note {
+  margin: 0;
+  line-height: 1.4;
+  color: var(--muted);
+}
+
 .install-btn {
   margin-bottom: 1rem;
   background: var(--accent);
