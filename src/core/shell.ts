@@ -188,6 +188,9 @@ export class GameScreen {
       commit: () => this.commit(),
       fit: (cols, rows) => {
         this.fitSize = [cols, rows];
+        // For stylesheets that lay the screen out around the board (see Alibi).
+        this.screen.style.setProperty('--fit-cols', String(cols));
+        this.screen.style.setProperty('--fit-rows', String(rows));
         this.applyFit();
       },
       setting: (id) => !!this.settings[id],

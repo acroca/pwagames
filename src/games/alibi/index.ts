@@ -136,28 +136,10 @@ export const alibi: GameModule<AlibiPuzzle, AlibiState> = {
       list.append(row);
       return row;
     });
-    ctx.toolbar.append(verdict, list, el('p', 'hint', t('Pick a person, then tap: ✕ → place → empty.')));
+    const hint = el('p', 'hint', t('Pick a person, then tap: ✕ → place → empty.'));
+    ctx.toolbar.append(verdict, list, hint);
 
     const occupant = (i: number) => ctx.state.pos.indexOf(i);
-
-    /**
-     * Shares the height between the board and the statements. The board keeps the largest size the shell would
-     * give it anyway (its cell cap and margins, see `applyFit`) while the statements fit beside it; when they
-     * don't, it gives up height down to squares that are still easy to tap, and only then does the list scroll.
-     */
-    const wrap = board.parentElement!;
-    const layout = () => {
-      const scroll = list.scrollTop;
-      // Measured with the list collapsed: left at its full height it can push the board area off the screen.
-      list.style.maxHeight = '0px';
-      const shared = wrap.clientHeight;
-      const cell = Math.min(72, Math.floor((wrap.clientWidth - 12) / n));
-      const roomy = shared - (n * cell + 8);
-      const tight = shared - (n * Math.min(cell, 40) + 8);
-      list.style.maxHeight = `${Math.max(120, roomy, Math.min(list.scrollHeight, tight))}px`;
-      list.scrollTop = scroll;
-    };
-    window.addEventListener('resize', layout);
 
     /** Squares shown with ✕ for the selected person: their own marks plus, if enabled, squares others rule out. */
     const shownMarks = () => {
@@ -176,7 +158,6 @@ export const alibi: GameModule<AlibiPuzzle, AlibiState> = {
 
     const render = () => {
       const { pos, marks } = ctx.state;
-      layout();
       const shown = shownMarks();
       const clash = clashes(n, pos);
       const done = ctx.finished;
@@ -217,6 +198,7 @@ export const alibi: GameModule<AlibiPuzzle, AlibiState> = {
         row.classList.remove('wrong');
       });
       verdict.hidden = !done;
+      hint.hidden = done;
       verdict.textContent = done
         ? t('{name} did it: the only one in {room} with the victim.', {
             name: nameOf(p.culprit),
@@ -293,10 +275,7 @@ export const alibi: GameModule<AlibiPuzzle, AlibiState> = {
           rows[who].classList.add('wrong');
         }
       },
-      destroy() {
-        stop();
-        window.removeEventListener('resize', layout);
-      },
+      destroy: stop,
     };
   },
 };
