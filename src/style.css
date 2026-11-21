@@ -2215,9 +2215,6 @@ button.primary {
 .board-numberlink .cell.painted {
   background: color-mix(in srgb, hsl(var(--h) 75% 55%) 38%, var(--surface));
 }
-.board-numberlink .cell.clash {
-  background: color-mix(in srgb, var(--bad) 40%, var(--surface));
-}
 .board-numberlink .cell.end .tag {
   display: flex;
   align-items: center;

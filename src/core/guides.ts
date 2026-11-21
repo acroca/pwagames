@@ -1390,12 +1390,12 @@ const RAW: Record<string, RawGuide> = {
       en: [
         'Drag from a number, or from any square of its path, through other squares to paint them in its color.',
         'Dragging over another path replaces it. A drag that starts on an empty square erases, and a tap on a path square clears it.',
-        'A number gets a glow ring once its pair is connected. Squares where a path branches turn red.',
+        'A number gets a glow ring once its pair is connected.',
       ],
       es: [
         'Arrastra desde un número, o desde cualquier casilla de su camino, por otras casillas para pintarlas de su color.',
         'Arrastrar sobre otro camino lo sustituye. Si empiezas en una casilla vacía, borra; y un toque en una casilla de un camino la limpia.',
-        'Un número se rodea de un halo cuando su pareja está conectada. Las casillas donde un camino se ramifica se ponen rojas.',
+        'Un número se rodea de un halo cuando su pareja está conectada.',
       ],
     },
     examples: [
