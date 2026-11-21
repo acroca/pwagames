@@ -61,8 +61,6 @@ export const numberlink: GameModule<NumberlinkPuzzle, NumberlinkState> = {
         const k = s[i];
         cell.style.setProperty('--h', String(hue(k)));
         cell.classList.toggle('painted', k > 0);
-        const same = near(i).filter((j) => s[j] === k).length;
-        cell.classList.toggle('clash', k > 0 && same > (ends[i] ? 1 : 2));
         cell.classList.toggle('linked', ends[i] > 0 && linked.has(k));
         cell.classList.remove('wrong');
         cell.setAttribute('aria-label', `${t('Row {r}, column {c}', { r: Math.floor(i / n) + 1, c: (i % n) + 1 })}: ${k ? t('path {n}', { n: k }) : t('empty')}`);
